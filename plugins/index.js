@@ -1,9 +1,10 @@
 import { registerFn } from "../common/plugin-element-cache";
 import pluginInfo from "../plugin-manifest.json";
 import cssString from "inline:./styles/style.css";
-import { handleGridPlugin } from "./grid-renderers";
+import { handleManageSchema } from "./manage";
+import { handleFormFieldConfig } from "./form-config";
 
-registerFn(pluginInfo, (handler, client) => {
+registerFn(pluginInfo, (handler, client, { toast, getPluginSettings }) => {
   /**
    * Add plugin styles to the head of the document
    */
@@ -14,7 +15,11 @@ registerFn(pluginInfo, (handler, client) => {
     document.head.appendChild(style);
   }
 
-  handler.on("flotiq.grid.cell::render", (data) =>
-    handleGridPlugin(data, client, pluginInfo),
+  handler.on("flotiq.form.field::config", (data) =>
+    handleFormFieldConfig(data, getPluginSettings),
+  );
+
+  handler.on("flotiq.plugins.manage::form-schema", (data) =>
+    handleManageSchema(data, client, toast),
   );
 });
