@@ -3,6 +3,7 @@ import pluginInfo from "../plugin-manifest.json";
 import cssString from "inline:./styles/style.css";
 import { handleManageSchema } from "./manage";
 import { handleFormFieldConfig } from "./form-config";
+import { handleFormFieldAdd } from "./form-add";
 
 registerFn(pluginInfo, (handler, client, { toast, getPluginSettings }) => {
   /**
@@ -17,6 +18,10 @@ registerFn(pluginInfo, (handler, client, { toast, getPluginSettings }) => {
 
   handler.on("flotiq.form.field::config", (data) =>
     handleFormFieldConfig(data, getPluginSettings),
+  );
+
+  handler.on("flotiq.form::add", (data) =>
+    handleFormFieldAdd(data, getPluginSettings),
   );
 
   handler.on("flotiq.plugins.manage::form-schema", (data) =>

@@ -14,7 +14,7 @@ export const handlePluginFormConfig = ({ name, config, formik }) => {
 
       formik.setFieldValue(`config[${index}].fields`, "");
     };
-  } else {
+  } else if (type === "fields") {
     const fieldOptions =
       getCachedElement(validFieldsCacheKey)?.element?.fieldOptions;
 
@@ -22,5 +22,10 @@ export const handlePluginFormConfig = ({ name, config, formik }) => {
 
     config.options = fieldOptions?.[ctd] || [];
     config.additionalHelpTextClasses = "break-normal";
+  } else if (type === "default_language") {
+    config.options = formik.values.config[index].languages.map((lng) => ({
+      value: lng,
+      label: lng,
+    }));
   }
 };

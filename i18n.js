@@ -7,6 +7,7 @@ i18n.init({
     en: {
       translation: {
         ContentType: "Content Type",
+        DefaultLanguage: "Domyślny język",
         FieldRequired: "Field is required",
         Fields: "Content type fields to translate",
         Languages: "Available languages",
@@ -18,6 +19,7 @@ i18n.init({
     pl: {
       translation: {
         ContentType: "Typ zawartości",
+        DefaultLanguage: "Default language",
         FieldRequired: "Pole jest wymagane",
         Fields: "Pola typu zawartości do przetłumaczenia",
         Languages: "Dostępne języki",

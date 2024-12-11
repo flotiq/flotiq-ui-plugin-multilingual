@@ -21,7 +21,12 @@ export const getSchema = (contentTypes) => ({
             type: "array",
             items: {
               type: "object",
-              required: ["languages", "fields", "content_type"],
+              required: [
+                "languages",
+                "fields",
+                "content_type",
+                "default_language",
+              ],
               properties: {
                 fields: {
                   type: "array",
@@ -41,6 +46,10 @@ export const getSchema = (contentTypes) => ({
                   type: "string",
                   minLength: 1,
                 },
+                default_language: {
+                  type: "string",
+                  minLength: 1,
+                },
               },
             },
           },
@@ -55,7 +64,7 @@ export const getSchema = (contentTypes) => ({
     propertiesConfig: {
       config: {
         items: {
-          order: ["content_type", "fields", "languages"],
+          order: ["content_type", "fields", "languages", "default_language"],
           propertiesConfig: {
             fields: {
               label: i18n.t("Fields"),
@@ -81,6 +90,14 @@ export const getSchema = (contentTypes) => ({
               optionsWithLabels: contentTypes,
               useOptionsWithLabels: true,
             },
+            default_language: {
+              label: i18n.t("DefaultLanguage"),
+              unique: false,
+              helpText: "",
+              isMultiple: false,
+              inputType: "select",
+              options: [],
+            },
           },
         },
         label: "config",
@@ -102,24 +119,26 @@ export const getValidator = (fieldKeys) => {
   const onValidate = (values) => {
     const errors = {};
 
-    values.config?.forEach(({ content_type, languages, fields }, index) => {
-      if (!content_type) {
-        addToErrors(errors, index, "content_type", i18n.t("FieldRequired"));
+    values.config?.forEach((ctdConfig, index) => {
+      const requiredFields = [
+        "content_type",
+        "default_language",
+        "languages",
+        "fields",
+      ];
+
+      for (const field of requiredFields) {
+        const value = ctdConfig[field];
+        if (!value || (Array.isArray(value) && !value.length)) {
+          addToErrors(errors, index, "field", i18n.t("FieldRequired"));
+        }
       }
 
-      if (!languages?.length) {
-        addToErrors(errors, index, "languages", i18n.t("FieldRequired"));
-      }
-
-      if (!fields?.length) {
-        addToErrors(errors, index, "fields", i18n.t("FieldRequired"));
-      } else {
-        fields.map((field) => {
-          if (!(fieldKeys[content_type] || []).includes(field)) {
-            addToErrors(errors, index, "fields", i18n.t("WrongField"));
-          }
-        });
-      }
+      (ctdConfig.fields || []).map((field) => {
+        if (!(fieldKeys[ctdConfig.content_type] || []).includes(field)) {
+          addToErrors(errors, index, "fields", i18n.t("WrongField"));
+        }
+      });
     });
 
     return errors;
@@ -128,7 +147,12 @@ export const getValidator = (fieldKeys) => {
   return onValidate;
 };
 
-const updateContentTypeSchema = async (contentType, fieldKeys, languages) => {
+const updateContentTypeSchema = async (
+  contentType,
+  fieldKeys,
+  languages,
+  defaultLanguage,
+) => {
   const translationPropertiesConfig = fieldKeys.reduce((config, key) => {
     config[key] = contentType.metaDefinition.propertiesConfig[key];
     return config;
@@ -151,7 +175,7 @@ const updateContentTypeSchema = async (contentType, fieldKeys, languages) => {
         __language: {
           label: "Language",
           unique: false,
-          options: languages,
+          options: languages.filter((lng) => lng !== defaultLanguage),
           helpText: "",
           inputType: "select",
           useOptionsWithLabels: false,
@@ -194,20 +218,28 @@ export const getSubmitHandler =
   (contentTypes, client, reload, modalInstance, toast) => async (values) => {
     try {
       await Promise.all(
-        values.config.map(async ({ content_type, fields, languages }) => {
-          const ctd = contentTypes.find(({ name }) => name === content_type);
-          const ctdClone = JSON.parse(JSON.stringify(ctd));
+        values.config.map(
+          async ({ content_type, fields, languages, default_language }) => {
+            const ctd = contentTypes.find(({ name }) => name === content_type);
+            const ctdClone = JSON.parse(JSON.stringify(ctd));
 
-          updateContentTypeSchema(ctdClone, fields, languages);
+            updateContentTypeSchema(
+              ctdClone,
+              fields,
+              languages,
+              default_language,
+            );
 
-          const isSame = deepEqual(ctd, ctdClone);
-          if (isSame) return;
+            const isSame = deepEqual(ctd, ctdClone);
+            if (isSame) return;
 
-          const { body, ok } = await client[ctd.name].putContentType(ctdClone);
-          if (!ok) {
-            toast.error(`Cannot update ${ctd.name}, ${body.message}`);
-          }
-        }),
+            const { body, ok } =
+              await client[ctd.name].putContentType(ctdClone);
+            if (!ok) {
+              toast.error(`Cannot update ${ctd.name}, ${body.message}`);
+            }
+          },
+        ),
       );
       const { body, ok } = await client["_plugin_settings"].patch(
         pluginInfo.id,

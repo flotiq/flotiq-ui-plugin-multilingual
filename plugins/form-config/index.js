@@ -14,11 +14,11 @@ export const handleFormFieldConfig = (data, getPluginSettings) => {
   const pluginSettings = getPluginSettings();
   const parsedSettings = JSON.parse(pluginSettings || "{}");
 
-  const contentTypeSettings = parsedSettings?.buttons?.filter(
+  const contentTypeSettings = parsedSettings?.config?.find(
     ({ content_type }) => content_type === data?.contentType?.name,
   );
 
-  if (!contentTypeSettings?.length) return;
+  if (!contentTypeSettings) return;
 
   handleCoFormConfig(data, contentTypeSettings);
 };
