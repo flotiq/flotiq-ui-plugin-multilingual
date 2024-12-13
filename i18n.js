@@ -10,6 +10,16 @@ i18n.init({
         ContentTypeUpdateError:
           "Cannot update {{name}} Content Type Definition. Please, try again later.",
         DefaultLanguage: "Domyślny język",
+        DeleteTranslations: {
+          Content:
+            "Do you want to also remove the translation field for the Content Types: <strong>{{types}}</strong>? " +
+            "This will delete all previously entered translated data for these types. " +
+            "This action is irreversible. \n\n" +
+            "If you do not agree, you can do this manually later by editing the Content Type Definitions.",
+          Keep: "Keep translation fields",
+          Remove: "Remove translation fields and data",
+          Title: "Do you want to remove translation fields?",
+        },
         FieldRequired: "Field is required",
         Fields: "Content type fields to translate",
         Languages: "Available languages",
@@ -31,6 +41,17 @@ i18n.init({
         ContentTypeUpdateError:
           "Coś poszło nie tak podczas aktualizacji definicji typu {{name}}. Spróbuj ponownie później.",
         DefaultLanguage: "Default language",
+        DeleteTranslations: {
+          Content:
+            "Czy chcesz usunąć również pole związane z tłumaczeniami dla definitcji typów: " +
+            "<strong>{{types}}</strong>? " +
+            "Spowoduje to usunięcie wszystkich wcześniej wprowadzonych przetłumaczonych danych dla tych typów. " +
+            "Ta akcja jest nieodwracalna. \n\n" +
+            "Jeśli się nie zgodzisz, będziesz mógł zrobić to później ręcznie poprzez edycję definicji typu.",
+          Keep: "Zachowaj pola tłumaczeń",
+          Remove: "Usuń pola tłumaczeń i dane",
+          Title: "Czy chcesz usunąć pola tłumaczeń?",
+        },
         FieldRequired: "Pole jest wymagane",
         Fields: "Pola typu zawartości do przetłumaczenia",
         Languages: "Dostępne języki",

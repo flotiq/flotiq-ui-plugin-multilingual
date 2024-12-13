@@ -9,29 +9,19 @@ import { getSubmitHandler } from "./lib/submit";
 import { getValidator } from "./lib/validator";
 import { getValidFields, validFieldsCacheKey } from "../../common/valid-fields";
 
-export const handleManageSchema = (
-  { contentTypes, modalInstance, reload },
-  client,
-  toast,
-) => {
+export const handleManageSchema = (data, client, globals) => {
   const formSchemaCacheKey = `${pluginInfo.id}-form-schema`;
   let formSchema = getCachedElement(formSchemaCacheKey)?.element;
 
   if (!formSchema) {
-    const validFields = getValidFields(contentTypes);
+    const validFields = getValidFields(data.contentTypes);
     addElementToCache(validFields, validFieldsCacheKey);
 
-    const ctds = contentTypes
+    const ctds = data.contentTypes
       ?.filter(({ internal }) => !internal)
       .map(({ name, label }) => ({ value: name, label }));
 
-    const onSubmit = getSubmitHandler(
-      contentTypes,
-      client,
-      reload,
-      modalInstance,
-      toast,
-    );
+    const onSubmit = getSubmitHandler(data, client, globals);
 
     formSchema = {
       options: {
@@ -43,7 +33,7 @@ export const handleManageSchema = (
     };
   }
 
-  modalInstance.promise.then(() => removeRoot(formSchemaCacheKey));
+  data.modalInstance.promise.then(() => removeRoot(formSchemaCacheKey));
 
   return formSchema;
 };

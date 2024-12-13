@@ -1,86 +1,88 @@
-import i18n from "../../../i18n";
 import pluginInfo from "../../../plugin-manifest.json";
 import deepEqual from "deep-equal";
+import {
+  addTranslationsToContentType,
+  removeTranslationsFromContetType,
+} from "./content-type-parser";
+import { showWarningModal } from "./warning-modal";
+import i18n from "../../../i18n";
 
-const updateContentTypeSchema = async (
-  contentType,
-  fieldKeys,
-  defaultLanguage,
+const getCtdsToRemove = async (
+  initialSettings,
+  currentConfig,
+  contentTypesAcc,
+  openModal,
 ) => {
-  const translationPropertiesConfig = fieldKeys.reduce((config, key) => {
-    config[key] = contentType.metaDefinition.propertiesConfig[key];
-    return config;
-  }, {});
+  const ctdRemoved = (initialSettings?.config || []).filter(
+    ({ content_type }) =>
+      !currentConfig.find(
+        ({ content_type: currentContentType }) =>
+          currentContentType === content_type,
+      ),
+  );
 
-  contentType.metaDefinition.propertiesConfig.__translations = {
-    helpText: "",
-    inputType: "object",
-    label: "Translations",
-    unique: false,
-    hidden: true,
-    items: {
-      order: [
-        ...contentType.metaDefinition.order.filter((key) =>
-          fieldKeys.includes(key),
-        ),
-        "__language",
-      ],
-      propertiesConfig: {
-        ...translationPropertiesConfig,
-        __language: {
-          label: "Language",
-          unique: false,
-          helpText: "",
-          inputType: "text",
-        },
-      },
-    },
-  };
+  if (!ctdRemoved.length) return [];
 
-  if (!contentType.metaDefinition.order.includes("__translations")) {
-    contentType.metaDefinition.order.push("__translations");
-  }
+  const removeTranslations = await showWarningModal(
+    ctdRemoved
+      .map(
+        ({ content_type }) =>
+          contentTypesAcc[content_type]?.label || content_type,
+      )
+      .join(", "),
+    openModal,
+  );
 
-  const translationProperties = fieldKeys.reduce((config, key) => {
-    config[key] = contentType.schemaDefinition.allOf[1].properties[key];
-    return config;
-  }, {});
-
-  const requiredFields = contentType.schemaDefinition.required;
-
-  contentType.schemaDefinition.allOf[1].properties.__translations = {
-    type: "array",
-    items: {
-      type: "object",
-      required: [
-        ...requiredFields.filter((key) => fieldKeys.includes(key)),
-        "__language",
-      ],
-      properties: {
-        ...translationProperties,
-        __language: {
-          type: "string",
-          minLength: 1,
-          default: defaultLanguage,
-        },
-      },
-    },
-  };
+  if (!removeTranslations) return [];
+  return ctdRemoved;
 };
 
+const getUpdateData = (config, contentTypesAcc, remove = false) =>
+  config.map(({ content_type, fields, default_language }) => {
+    const ctd = contentTypesAcc[content_type];
+    const ctdClone = JSON.parse(JSON.stringify(ctd));
+
+    if (remove) removeTranslationsFromContetType(ctdClone);
+    else addTranslationsToContentType(ctdClone, fields, default_language);
+
+    return { ctd, ctdClone };
+  });
+
 export const getSubmitHandler =
-  (contentTypes, client, reload, modalInstance, toast) => async (values) => {
+  (
+    { contentTypes, reload, modalInstance },
+    client,
+    { toast, getPluginSettings, openModal },
+  ) =>
+  async (values) => {
     let close = true;
+    const initialSettings = JSON.parse(getPluginSettings() || "{}");
+    const currentConfig = values.config || [];
+
+    const contentTypesAcc = (contentTypes || []).reduce((acc, ctd) => {
+      acc[ctd.name] = ctd;
+      return acc;
+    }, {});
+
+    const ctdsWithTranslations = getUpdateData(currentConfig, contentTypesAcc);
+
+    const ctdsToRemove = await getCtdsToRemove(
+      initialSettings,
+      currentConfig,
+      contentTypesAcc,
+      openModal,
+    );
+
+    const ctdsWithoutTranslations = getUpdateData(
+      ctdsToRemove,
+      contentTypesAcc,
+      true,
+    );
 
     try {
       await Promise.all(
-        values.config.map(
-          async ({ content_type, fields, default_language }) => {
-            const ctd = contentTypes.find(({ name }) => name === content_type);
-            const ctdClone = JSON.parse(JSON.stringify(ctd));
-
-            updateContentTypeSchema(ctdClone, fields, default_language);
-
+        [...ctdsWithTranslations, ...ctdsWithoutTranslations].map(
+          async ({ ctd, ctdClone }) => {
             const isSame = deepEqual(ctd, ctdClone);
             if (isSame) return;
 
@@ -91,13 +93,16 @@ export const getSubmitHandler =
               console.error(pluginInfo.id, "updating schema", ctd.name, body);
               toast.error(
                 i18n.t("ContentTypeUpdateError", { name: ctd.name }),
-                { duration: 5000 },
+                {
+                  duration: 5000,
+                },
               );
               close = false;
             }
           },
         ),
       );
+
       const { body, ok } = await client["_plugin_settings"].patch(
         pluginInfo.id,
         {
@@ -109,6 +114,7 @@ export const getSubmitHandler =
         toast.error(i18n.t("SettingsUpdateError"), { duration: 5000 });
         return [values, body];
       }
+
       if (close) modalInstance.resolve();
       reload();
       return [body, {}];

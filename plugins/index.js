@@ -5,7 +5,7 @@ import { handleManageSchema } from "./manage";
 import { handleFormFieldConfig } from "./form-config";
 import { handleFormFieldAdd } from "./form-add";
 
-registerFn(pluginInfo, (handler, client, { toast, getPluginSettings }) => {
+registerFn(pluginInfo, (handler, client, globals) => {
   /**
    * Add plugin styles to the head of the document
    */
@@ -17,14 +17,14 @@ registerFn(pluginInfo, (handler, client, { toast, getPluginSettings }) => {
   }
 
   handler.on("flotiq.form.field::config", (data) =>
-    handleFormFieldConfig(data, getPluginSettings),
+    handleFormFieldConfig(data, globals.getPluginSettings),
   );
 
   handler.on("flotiq.form::add", (data) =>
-    handleFormFieldAdd(data, getPluginSettings),
+    handleFormFieldAdd(data, globals.getPluginSettings),
   );
 
   handler.on("flotiq.plugins.manage::form-schema", (data) =>
-    handleManageSchema(data, client, toast),
+    handleManageSchema(data, client, globals),
   );
 });

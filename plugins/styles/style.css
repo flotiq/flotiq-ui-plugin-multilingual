@@ -17,16 +17,26 @@
   border-bottom: 3px solid #0083fc;
 }
 
-.plugin-multilangual-translations-warning {
+.plugin-multilangual-translations-warning,
+.plugin-multilangual-remove-ctd-warning__heading {
   color: #eb5757;
-  font-weight: 600;
-  font-size: 14px;
-  border-bottom: 1px solid #eb5757;
-  padding-bottom: 1rem;
   display: flex;
 }
 
-.plugin-multilangual-translations-warning::before {
+.plugin-multilangual-translations-warning {
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #eb5757;
+  padding-bottom: 1rem;
+}
+
+.plugin-multilangual-remove-ctd-warning__heading {
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.plugin-multilangual-translations-warning::before,
+.plugin-multilangual-remove-ctd-warning__heading::before {
   display: inline-block;
   content: url("../../images/exclamation_triangle_red-icon.svg");
   width: 20px;
@@ -34,4 +44,12 @@
   align-self: start;
   margin-right: 6px;
   flex-shrink: 0;
+}
+
+.plugin-multilangual-remove-ctd-warning__heading::before {
+  margin-right: 12px;
+}
+
+.plugin-multilangual-remove-ctd-warning__content {
+  white-space: pre-line;
 }

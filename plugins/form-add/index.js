@@ -85,7 +85,7 @@ export const handleFormFieldAdd = (
       lngItemButton.onclick = (event) => {
         formLng.current = lng;
 
-        const slectedTab = document.querySelector(`.${selectedClass}`);
+        const slectedTab = tabsContainer.querySelector(`.${selectedClass}`);
         if (slectedTab) slectedTab.classList.toggle(selectedClass);
 
         event.target.classList.toggle(selectedClass);
