@@ -4,6 +4,7 @@ import cssString from "inline:./styles/style.css";
 import { handleManageSchema } from "./manage";
 import { handleFormFieldConfig } from "./form-config";
 import { handleFormFieldAdd } from "./form-add";
+import { handleRemovedEvent } from "./plugin-removed";
 
 registerFn(pluginInfo, (handler, client, globals) => {
   /**
@@ -26,5 +27,9 @@ registerFn(pluginInfo, (handler, client, globals) => {
 
   handler.on("flotiq.plugins.manage::form-schema", (data) =>
     handleManageSchema(data, client, globals),
+  );
+
+  handler.on("flotiq.plugin::removed", () =>
+    handleRemovedEvent(client, globals),
   );
 });

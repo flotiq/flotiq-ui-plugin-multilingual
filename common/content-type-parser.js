@@ -1,4 +1,51 @@
-export const removeTranslationsFromContetType = (contentType) => {
+import { showWarningModal } from "./warning-modal";
+
+export const getCtdsToRemove = async (
+  currentConfig,
+  contentTypesAcc,
+  openModal,
+  initialSettings = null,
+) => {
+  let ctdRemoved = currentConfig;
+
+  if (initialSettings) {
+    ctdRemoved = (initialSettings?.config || []).filter(
+      ({ content_type }) =>
+        !currentConfig.find(
+          ({ content_type: currentContentType }) =>
+            currentContentType === content_type,
+        ),
+    );
+  }
+
+  if (!ctdRemoved.length) return [];
+
+  const removeTranslations = await showWarningModal(
+    ctdRemoved
+      .map(
+        ({ content_type }) =>
+          contentTypesAcc[content_type]?.label || content_type,
+      )
+      .join(", "),
+    openModal,
+  );
+
+  if (!removeTranslations) return [];
+  return ctdRemoved;
+};
+
+export const getUpdateData = (config, contentTypesAcc, remove = false) =>
+  config.map(({ content_type, fields, default_language }) => {
+    const ctd = contentTypesAcc[content_type];
+    const ctdClone = JSON.parse(JSON.stringify(ctd));
+
+    if (remove) removeTranslationsFromContetType(ctdClone);
+    else addTranslationsToContentType(ctdClone, fields, default_language);
+
+    return { ctd, ctdClone };
+  });
+
+const removeTranslationsFromContetType = (contentType) => {
   contentType.metaDefinition.order = contentType.metaDefinition.order.filter(
     (name) => name !== "__translations",
   );
@@ -11,7 +58,7 @@ export const removeTranslationsFromContetType = (contentType) => {
   delete contentType.schemaDefinition.allOf[1].properties.__translations;
 };
 
-export const addTranslationsToContentType = async (
+const addTranslationsToContentType = async (
   contentType,
   fieldKeys,
   defaultLanguage,

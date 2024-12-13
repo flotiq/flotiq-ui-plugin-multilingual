@@ -75,11 +75,15 @@ export const handleFormFieldAdd = (
     for (const lng of contentTypeSettings.languages) {
       const lngItemButton = document.createElement("button");
       lngItemButton.className = "plugin-multilangual-tab__item";
+      lngItemButton["data-language"] = lng;
       lngItemButton.innerText = lng;
       lngItemButton.type = "button";
 
       if (lng === defaultLng) {
         lngItemButton.classList.toggle(selectedClass);
+        lngItemButton.classList.toggle(
+          "plugin-multilangual-tab__item--default",
+        );
       }
 
       lngItemButton.onclick = (event) => {

@@ -27,10 +27,14 @@ i18n.init({
         NoTranslations:
           "Could not find translation field for this Content Type. " +
           "Go to multilangual plugin settings and try to reconfigure plugin.",
+        RemoveError:
+          "Sorry, there was a problem deleting your data. " +
+          "Please go to the edit content type definition page and delete it manually.",
         SettingsUpdateError:
           "Cannot update plugin settings. Please try again later.",
         UpdateError:
           "Error occurred while connecting to the server, please try again later.",
+        Warning: "Warning!",
         WrongField:
           "This field type is not supported or content type does not have this field",
       },
@@ -59,10 +63,14 @@ i18n.init({
         NoTranslations:
           "Nie udało się znaleźć pola z tłumaczeniami. " +
           "Przejdź do ustawień wtyczki multilangual i spróbuj ponownie ją skonfigurować.",
+        RemoveError:
+          "Przepraszamy, wystąpił problem podczas usuwania Twoich danych. " +
+          "Proszę, przejdź do strony edycji definicji typu zawartości i usuń je ręcznie.",
         SettingsUpdateError:
           "Coś poszło nie tak podczas aktualizacji ustawień plugin. Spróbuj ponownie później",
         UpdateError:
           "Wystąpił błąd połączenia z serwerem, spróbuj ponownie później.",
+        Warning: "Uwaga!",
         WrongField:
           "Ten typ pola nie jest wspierany lub typ zawartości już go nie zawiera",
       },

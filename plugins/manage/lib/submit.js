@@ -1,52 +1,10 @@
 import pluginInfo from "../../../plugin-manifest.json";
 import deepEqual from "deep-equal";
 import {
-  addTranslationsToContentType,
-  removeTranslationsFromContetType,
-} from "./content-type-parser";
-import { showWarningModal } from "./warning-modal";
+  getCtdsToRemove,
+  getUpdateData,
+} from "../../../common/content-type-parser";
 import i18n from "../../../i18n";
-
-const getCtdsToRemove = async (
-  initialSettings,
-  currentConfig,
-  contentTypesAcc,
-  openModal,
-) => {
-  const ctdRemoved = (initialSettings?.config || []).filter(
-    ({ content_type }) =>
-      !currentConfig.find(
-        ({ content_type: currentContentType }) =>
-          currentContentType === content_type,
-      ),
-  );
-
-  if (!ctdRemoved.length) return [];
-
-  const removeTranslations = await showWarningModal(
-    ctdRemoved
-      .map(
-        ({ content_type }) =>
-          contentTypesAcc[content_type]?.label || content_type,
-      )
-      .join(", "),
-    openModal,
-  );
-
-  if (!removeTranslations) return [];
-  return ctdRemoved;
-};
-
-const getUpdateData = (config, contentTypesAcc, remove = false) =>
-  config.map(({ content_type, fields, default_language }) => {
-    const ctd = contentTypesAcc[content_type];
-    const ctdClone = JSON.parse(JSON.stringify(ctd));
-
-    if (remove) removeTranslationsFromContetType(ctdClone);
-    else addTranslationsToContentType(ctdClone, fields, default_language);
-
-    return { ctd, ctdClone };
-  });
 
 export const getSubmitHandler =
   (
@@ -67,10 +25,10 @@ export const getSubmitHandler =
     const ctdsWithTranslations = getUpdateData(currentConfig, contentTypesAcc);
 
     const ctdsToRemove = await getCtdsToRemove(
-      initialSettings,
       currentConfig,
       contentTypesAcc,
       openModal,
+      initialSettings,
     );
 
     const ctdsWithoutTranslations = getUpdateData(

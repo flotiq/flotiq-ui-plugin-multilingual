@@ -1,11 +1,10 @@
-import pluginInfo from "../../../plugin-manifest.json";
-import {
-  addElementToCache,
-  getCachedElement,
-} from "../../../common/plugin-element-cache";
-import i18n from "../../../i18n";
+import pluginInfo from "../plugin-manifest.json";
+import { addElementToCache, getCachedElement } from "./plugin-element-cache";
+import i18n from "../i18n";
 
-export const showWarningModal = (types, openModal) => {
+const warningModalId = "plugin-multilangual-warning-modal";
+
+const getContent = (headerText, contentText) => {
   const modalContentCacheKey = `${pluginInfo.id}-remove-ctd-warning`;
   let modalContent = getCachedElement(modalContentCacheKey)?.element;
 
@@ -24,19 +23,26 @@ export const showWarningModal = (types, openModal) => {
   const heading = modalContent.querySelector(
     ".plugin-multilangual-remove-ctd-warning__heading",
   );
-  heading.textContent = i18n.t("DeleteTranslations.Title");
+  heading.textContent = headerText;
 
   const content = modalContent.querySelector(
     ".plugin-multilangual-remove-ctd-warning__content",
   );
+  content.innerHTML = contentText;
 
-  content.innerHTML = i18n.t("DeleteTranslations.Content", {
-    types,
-  });
+  return modalContent;
+};
 
-  return openModal({
+export const showWarningModal = (types, openModal) =>
+  openModal({
+    id: warningModalId,
     size: "lg",
-    content: modalContent,
+    content: getContent(
+      i18n.t("DeleteTranslations.Title"),
+      i18n.t("DeleteTranslations.Content", {
+        types,
+      }),
+    ),
     hideClose: true,
     buttons: [
       {
@@ -53,4 +59,16 @@ export const showWarningModal = (types, openModal) => {
       },
     ],
   });
-};
+
+export const errorModal = async (openModal) =>
+  openModal({
+    id: warningModalId,
+    content: getContent(i18n.t("Warning"), i18n.t("RemoveError")),
+    buttons: [
+      {
+        key: "ok",
+        label: "Ok",
+        color: "blue",
+      },
+    ],
+  });
