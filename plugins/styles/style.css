@@ -16,3 +16,22 @@
   color: #0083fc;
   border-bottom: 3px solid #0083fc;
 }
+
+.plugin-multilangual-translations-warning {
+  color: #eb5757;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid #eb5757;
+  padding-bottom: 1rem;
+  display: flex;
+}
+
+.plugin-multilangual-translations-warning::before {
+  display: inline-block;
+  content: url("../../images/exclamation_triangle_red-icon.svg");
+  width: 20px;
+  height: 20px;
+  align-self: start;
+  margin-right: 6px;
+  flex-shrink: 0;
+}

@@ -1,11 +1,13 @@
-import { getValidFields, validFieldsCacheKey } from "../../common/valid-fields";
-import { getSchema, getSubmitHandler, getValidator } from "./form-schema";
 import pluginInfo from "../../plugin-manifest.json";
 import {
   addElementToCache,
   getCachedElement,
   removeRoot,
 } from "../../common/plugin-element-cache";
+import { getSchema } from "./lib/form-schema";
+import { getSubmitHandler } from "./lib/submit";
+import { getValidator } from "./lib/validator";
+import { getValidFields, validFieldsCacheKey } from "../../common/valid-fields";
 
 export const handleManageSchema = (
   { contentTypes, modalInstance, reload },

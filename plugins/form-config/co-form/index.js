@@ -3,9 +3,11 @@ import { formLng } from "../../form-add";
 let fieldDictionary = null;
 
 export const handleCoFormConfig = async (
-  { name, config, formik },
+  { name, config, formik, contentType },
   contentTypeSettings,
 ) => {
+  if (!contentType.metaDefinition?.propertiesConfig?.__translations) return;
+
   config.key = `${formLng.current}-${name}`;
 
   if (
