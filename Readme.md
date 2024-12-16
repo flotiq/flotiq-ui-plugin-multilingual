@@ -1,34 +1,97 @@
 [[_TOC_]]
 
-# Plain JS Plugin
+# Multilangual Plugin
 
-## Quick start
+## Overview
+Multilingual Plugin is an advanced plugin that allows easy addition and management of translations while editing objects. It supports multiple languages and enables users to define and manage their own language sets.
+
+## Configuration Steps
+
+1. First, select the Content Type.
+2. After selecting the Content Type, choose the fields that will be translated. If any field is not selected for translations, it will be disabled on the tab for another language.
+3. Add at least two languages and select the default language.
+4. After saving the settings, the Content Type is modified and a `__translations` field is added, containing an array of available translations. The translation language is available under the `__language` field in each `__translations` item.
+
+<img src=".docs/configuration.png" alt="Multilangual plugin configuration" width="700"/>
+
+## Special Fields
+
+* `__translations`: Contains an array of translations, excluding the default language, whose data is found in the object fields.
+* `__language`: Specifies the translation language.
+
+If a field is not selected for translations, it will not be visible in the __translations field and will only be available in the basic fields of the object for the default language.
+
+> Warning! The __translations field should not be manually modified. After each change in the content type for translated fields, go to the plugin settings and save them again to properly update the translation fields.
+
+## Plugin Usage
+
+* When adding/editing an object, tabs with the previously selected languages will be available. The default language is always in the first tab.
+* Clicking on another language tab will add the translated fields, populated with the current fields in the default language.
+* If we return to the default language tab, make changes, and go back to another language tab, the previously filled fields will not be overwritten.
+
+<img src=".docs/default-lng.png" alt="Default language tab" width="400"/>
+<img src=".docs/translation-lng.png" alt="Translation language tab" width="400"/>
+
+## Removing Content Type from plugin settings
+
+When removing the content type from the settings, you will be asked whether to keep the translations or remove them:
+
+* Removing: Modifies the content type, removes the `__translations` field, and deletes the collected data.
+* Keeping: If you choose the "Keep translation fields" option, you can remove `__translations` field later manually by editing the content type.
+
+## Example object
+
+Let's assume you have an object with `title` and `slug` fields. Before applying translations, your object will look like:
+
+```json
+{
+   "title": "My first blog post",
+   "slug": "my-first-blog-post"
+}
+```
+
+Now, let's consider you are adding two languages: `pl` and `en`, and your default language is `en`. You are choosing the `title` field to translate. After applying translations, the object will be:
+
+```json
+{
+   "title": "My first blog post",
+   "slug": "my-first-blog-post",
+   "__translations": [{
+      "__language": "pl",
+      "title": "Mój pierwszy post na blogu"
+   }]
+}
+```
+
+## Development
+
+### Quick start
 
 1. `yarn` - to install dependencies
 2. `yarn start` - to start development mode - rebuild on file modifications
 3. update your `plugin-manifest.json` file to contain the production URL and other plugin information
 4. `yarn build` - to build plugins
 
-## Dev environment
+### Dev environment
 
 Dev environment is configured to use:
 
 * `prettier` - best used with automatic format on save in IDE
 * `eslint` - it is built into both `start` and `build` commands
 
-## Output
+### Output
 
 The plugins are built into a single `dist/index.js` file. The manifest is copied to `dist/plugin-manifest.json` file.
 
-## Deployment
+### Deployment
 
 <!-- TO DO -->
 
-## Loading the plugin
+### Loading the plugin
 
 **Warning:** While developing, you can use  `https://localhost:3053/plugin-manifest.json` address to load the plugin manifest. Make sure your browser trusts the local certificate on the latter, to be able to use it e.g. with `https://editor.flotiq.com`
 
-### URL
+#### URL
 
 **Hint**: You can use localhost url from development mode `https://localhost:3053/index.js`
 
@@ -40,14 +103,14 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
    ```
 4. Navigate to the view that is modified by the plugin
 
-### Directly
+#### Directly
 
 1. Open Flotiq editor
 2. Open Chrome Dev console
 3. Paste the content of `dist/index.js` 
 4. Navigate to the view that is modified by the plugin
 
-### Deployment
+#### Deployment
 
 **Hint**: You can use localhost url from development mode `https://localhost:3053/plugin-manifest.json`
 
