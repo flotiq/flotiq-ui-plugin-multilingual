@@ -75,7 +75,7 @@ export const handleFormFieldAdd = (
     for (const lng of contentTypeSettings.languages) {
       const lngItemButton = document.createElement("button");
       lngItemButton.className = "plugin-multilangual-tab__item";
-      lngItemButton["data-language"] = lng;
+      lngItemButton.setAttribute("data-language", lng);
       lngItemButton.innerText = lng;
       lngItemButton.type = "button";
 
@@ -109,7 +109,17 @@ export const handleFormFieldAdd = (
             }
           }
 
-          tabsData.formik.setFieldTouched(`__translations`, true);
+          const touchedFields = Object.keys(
+            tabsData.formik.errors || {},
+          ).reduce(
+            (acc, key) => {
+              acc[key] = true;
+              return acc;
+            },
+            { __translations: true },
+          );
+
+          tabsData.formik.setTouched(touchedFields);
         });
       };
 

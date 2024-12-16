@@ -22,6 +22,11 @@
   order: -1;
 }
 
+.plugin-multilangual-tab__item.plugin-multilangual-tab__item--error {
+  color: #eb5757;
+  border-color: #eb5757;
+}
+
 .plugin-multilangual-translations-warning,
 .plugin-multilangual-remove-ctd-warning__heading {
   color: #eb5757;

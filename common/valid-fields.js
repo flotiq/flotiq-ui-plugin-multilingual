@@ -14,7 +14,8 @@ export const getValidFields = (contentTypes) => {
 
     Object.entries(metaDefinition?.propertiesConfig || {}).forEach(
       ([key, value]) => {
-        fieldOptions[name].push({ value: key, label: value.label });
+        if (key !== "__translations")
+          fieldOptions[name].push({ value: key, label: value.label });
       },
     );
   });

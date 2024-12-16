@@ -5,6 +5,7 @@ import { handleManageSchema } from "./manage";
 import { handleFormFieldConfig } from "./form-config";
 import { handleFormFieldAdd } from "./form-add";
 import { handleRemovedEvent } from "./plugin-removed";
+import { fieldDictionary } from "./form-config/co-form";
 
 registerFn(pluginInfo, (handler, client, globals) => {
   /**
@@ -32,4 +33,8 @@ registerFn(pluginInfo, (handler, client, globals) => {
   handler.on("flotiq.plugin::removed", () =>
     handleRemovedEvent(client, globals),
   );
+
+  handler.on("flotiq.plugin.settings::changed", () => {
+    fieldDictionary.current = null;
+  });
 });
