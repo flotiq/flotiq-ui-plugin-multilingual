@@ -5,7 +5,7 @@ import {
 import i18n from "../../i18n";
 import pluginInfo from "../../plugin-manifest.json";
 
-const selectedClass = "plugin-multilangual-tab__item--selected";
+const selectedClass = "plugin-multilingual-tab__item--selected";
 
 export const formLng = {
   current: null,
@@ -49,7 +49,7 @@ export const handleFormFieldAdd = (
 
     if (!warning) {
       warning = document.createElement("div");
-      warning.className = "plugin-multilangual-translations-warning";
+      warning.className = "plugin-multilingual-translations-warning";
 
       addElementToCache(warning, warningCacheKey);
     }
@@ -67,14 +67,14 @@ export const handleFormFieldAdd = (
 
   if (!tabsContainer) {
     tabsContainer = document.createElement("div");
-    tabsContainer.className = "plugin-multilangual-tabs";
+    tabsContainer.className = "plugin-multilingual-tabs";
 
     const defaultLng = contentTypeSettings.default_language;
     formLng.current = defaultLng;
 
     for (const lng of contentTypeSettings.languages) {
       const lngItemButton = document.createElement("button");
-      lngItemButton.className = "plugin-multilangual-tab__item";
+      lngItemButton.className = "plugin-multilingual-tab__item";
       lngItemButton.setAttribute("data-language", lng);
       lngItemButton.innerText = lng;
       lngItemButton.type = "button";
@@ -82,7 +82,7 @@ export const handleFormFieldAdd = (
       if (lng === defaultLng) {
         lngItemButton.classList.toggle(selectedClass);
         lngItemButton.classList.toggle(
-          "plugin-multilangual-tab__item--default",
+          "plugin-multilingual-tab__item--default",
         );
       }
 

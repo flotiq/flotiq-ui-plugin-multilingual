@@ -26,7 +26,7 @@ i18n.init({
         MinLanguages: "You have to add at least 2 langugages",
         NoTranslations:
           "Could not find translation field for this Content Type. " +
-          "Go to multilangual plugin settings and try to reconfigure plugin.",
+          "Go to multilingual plugin settings and try to reconfigure plugin.",
         RemoveError:
           "Sorry, there was a problem deleting your data. " +
           "Please go to the edit content type definition page and delete it manually.",
@@ -62,7 +62,7 @@ i18n.init({
         MinLanguages: "Musisz dodać co najmniej dwa języki",
         NoTranslations:
           "Nie udało się znaleźć pola z tłumaczeniami. " +
-          "Przejdź do ustawień wtyczki multilangual i spróbuj ponownie ją skonfigurować.",
+          "Przejdź do ustawień wtyczki multilingual i spróbuj ponownie ją skonfigurować.",
         RemoveError:
           "Przepraszamy, wystąpił problem podczas usuwania Twoich danych. " +
           "Proszę, przejdź do strony edycji definicji typu zawartości i usuń je ręcznie.",

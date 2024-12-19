@@ -1,6 +1,6 @@
 [[_TOC_]]
 
-# Multilangual Plugin
+# Multilingual Plugin
 
 ## Overview
 Multilingual Plugin is an advanced plugin that allows easy addition and management of translations while editing objects. It supports multiple languages and enables users to define and manage their own language sets.
@@ -12,7 +12,7 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 3. Add at least two languages and select the default language.
 4. After saving the settings, the Content Type is modified and a `__translations` field is added, containing an array of available translations. The translation language is available under the `__language` field in each `__translations` item.
 
-<img src=".docs/configuration.png" alt="Multilangual plugin configuration" width="700"/>
+<img src=".docs/configuration.png" alt="Multilingual plugin configuration" width="700"/>
 
 ## Special Fields
 

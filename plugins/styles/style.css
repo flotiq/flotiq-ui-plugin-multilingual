@@ -1,52 +1,52 @@
-.plugin-multilangual-tabs {
+.plugin-multilingual-tabs {
   font-weight: 600;
   text-transform: uppercase;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
 }
 
-.plugin-multilangual-tab__item {
+.plugin-multilingual-tab__item {
   padding: 16px 28px;
 }
 
-.plugin-multilangual-tab__item:not(:last-child) {
+.plugin-multilingual-tab__item:not(:last-child) {
   margin-right: 8px;
 }
 
-.plugin-multilangual-tab__item.plugin-multilangual-tab__item--selected {
+.plugin-multilingual-tab__item.plugin-multilingual-tab__item--selected {
   color: #0083fc;
   border-bottom: 3px solid #0083fc;
 }
 
-.plugin-multilangual-tab__item.plugin-multilangual-tab__item--default {
+.plugin-multilingual-tab__item.plugin-multilingual-tab__item--default {
   order: -1;
 }
 
-.plugin-multilangual-tab__item.plugin-multilangual-tab__item--error {
+.plugin-multilingual-tab__item.plugin-multilingual-tab__item--error {
   color: #eb5757;
   border-color: #eb5757;
 }
 
-.plugin-multilangual-translations-warning,
-.plugin-multilangual-remove-ctd-warning__heading {
+.plugin-multilingual-translations-warning,
+.plugin-multilingual-remove-ctd-warning__heading {
   color: #eb5757;
   display: flex;
 }
 
-.plugin-multilangual-translations-warning {
+.plugin-multilingual-translations-warning {
   font-size: 14px;
   font-weight: 600;
   border-bottom: 1px solid #eb5757;
   padding-bottom: 1rem;
 }
 
-.plugin-multilangual-remove-ctd-warning__heading {
+.plugin-multilingual-remove-ctd-warning__heading {
   line-height: 1.25;
   margin-bottom: 16px;
 }
 
-.plugin-multilangual-translations-warning::before,
-.plugin-multilangual-remove-ctd-warning__heading::before {
+.plugin-multilingual-translations-warning::before,
+.plugin-multilingual-remove-ctd-warning__heading::before {
   display: inline-block;
   content: url("../../images/exclamation_triangle_red-icon.svg");
   width: 20px;
@@ -56,10 +56,10 @@
   flex-shrink: 0;
 }
 
-.plugin-multilangual-remove-ctd-warning__heading::before {
+.plugin-multilingual-remove-ctd-warning__heading::before {
   margin-right: 12px;
 }
 
-.plugin-multilangual-remove-ctd-warning__content {
+.plugin-multilingual-remove-ctd-warning__content {
   white-space: pre-line;
 }

@@ -2,7 +2,7 @@ import pluginInfo from "../plugin-manifest.json";
 import { addElementToCache, getCachedElement } from "./plugin-element-cache";
 import i18n from "../i18n";
 
-const warningModalId = "plugin-multilangual-warning-modal";
+const warningModalId = "plugin-multilingual-warning-modal";
 
 const getContent = (headerText, contentText) => {
   const modalContentCacheKey = `${pluginInfo.id}-remove-ctd-warning`;
@@ -10,23 +10,23 @@ const getContent = (headerText, contentText) => {
 
   if (!modalContent) {
     modalContent = document.createElement("div");
-    modalContent.className = "plugin-multilangual-remove-ctd-warning";
+    modalContent.className = "plugin-multilingual-remove-ctd-warning";
 
     modalContent.innerHTML = /* html */ `
-        <h3 class="plugin-multilangual-remove-ctd-warning__heading"></h3>
-        <p class="plugin-multilangual-remove-ctd-warning__content"></p>
+        <h3 class="plugin-multilingual-remove-ctd-warning__heading"></h3>
+        <p class="plugin-multilingual-remove-ctd-warning__content"></p>
         `;
 
     addElementToCache(modalContent, modalContentCacheKey);
   }
 
   const heading = modalContent.querySelector(
-    ".plugin-multilangual-remove-ctd-warning__heading",
+    ".plugin-multilingual-remove-ctd-warning__heading",
   );
   heading.textContent = headerText;
 
   const content = modalContent.querySelector(
-    ".plugin-multilangual-remove-ctd-warning__content",
+    ".plugin-multilingual-remove-ctd-warning__content",
   );
   content.innerHTML = contentText;
 

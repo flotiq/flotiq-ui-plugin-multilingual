@@ -1,11 +1,11 @@
 import { formLng } from "../../form-add";
 
-const errorClass = "plugin-multilangual-tab__item--error";
+const errorClass = "plugin-multilingual-tab__item--error";
 
 const toggleErrorOnTab = (lng, error) => {
   const lngItem = document
-    .querySelector(".plugin-multilangual-tabs")
-    ?.querySelector(`.plugin-multilangual-tab__item[data-language=${lng}]`);
+    .querySelector(".plugin-multilingual-tabs")
+    ?.querySelector(`.plugin-multilingual-tab__item[data-language=${lng}]`);
 
   if (!lngItem) return;
 
