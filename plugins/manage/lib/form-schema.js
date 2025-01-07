@@ -1,109 +1,82 @@
+import { lngDictionary } from "../..";
 import i18n from "../../../i18n";
 import pluginInfo from "../../../plugin-manifest.json";
 
-export const getSchema = (contentTypes) => ({
-  id: pluginInfo.id,
-  name: pluginInfo.id,
-  label: pluginInfo.name,
-  internal: false,
-  workflowId: "generic",
-  schemaDefinition: {
-    type: "object",
-    allOf: [
-      {
-        $ref: "#/components/schemas/AbstractContentTypeSchemaDefinition",
-      },
-      {
-        type: "object",
-        properties: {
-          config: {
-            type: "array",
-            items: {
-              type: "object",
-              required: [
-                "languages",
-                "fields",
-                "content_type",
-                "default_language",
-              ],
-              properties: {
-                fields: {
-                  type: "array",
-                  items: {
-                    type: "string",
-                  },
-                  minItems: 1,
-                },
-                languages: {
-                  type: "array",
-                  items: {
-                    type: "string",
-                  },
-                  minItems: 1,
-                },
-                content_type: {
-                  type: "string",
-                  minLength: 1,
-                },
-                default_language: {
-                  type: "string",
-                  minLength: 1,
-                },
-              },
-            },
-          },
+export const getSchema = (contentTypes) => {
+  const countryOptions = Object.keys(lngDictionary.current).map((key) => ({
+    value: key,
+    label: lngDictionary.current[key],
+  }));
+
+  return {
+    id: pluginInfo.id,
+    name: pluginInfo.id,
+    label: pluginInfo.name,
+    internal: false,
+    workflowId: "generic",
+    schemaDefinition: {
+      type: "object",
+      allOf: [
+        {
+          $ref: "#/components/schemas/AbstractContentTypeSchemaDefinition",
         },
-      },
-    ],
-    required: [],
-    additionalProperties: false,
-  },
-  metaDefinition: {
-    order: ["config"],
-    propertiesConfig: {
-      config: {
-        items: {
-          order: ["content_type", "fields", "languages", "default_language"],
-          propertiesConfig: {
-            fields: {
-              label: i18n.t("Fields"),
-              unique: false,
-              helpText: "",
-              multiple: true,
-              inputType: "select",
-              optionsWithLabels: [],
-              useOptionsWithLabels: true,
-            },
+        {
+          type: "object",
+          properties: {
             languages: {
-              label: i18n.t("Languages"),
-              unique: false,
-              helpText: "",
-              inputType: "simpleList",
-            },
-            content_type: {
-              label: i18n.t("ContentType"),
-              unique: false,
-              helpText: "",
-              isMultiple: false,
-              inputType: "select",
-              optionsWithLabels: contentTypes,
-              useOptionsWithLabels: true,
+              type: "array",
+              items: {
+                type: "string",
+              },
+              minLength: 1,
             },
             default_language: {
-              label: i18n.t("DefaultLanguage"),
-              unique: false,
-              helpText: "",
-              isMultiple: false,
-              inputType: "select",
-              options: [],
+              type: "string",
+              minLength: 1,
+            },
+            content_types: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+              minLength: 1,
             },
           },
         },
-        label: "config",
-        unique: false,
-        helpText: "",
-        inputType: "object",
+      ],
+      required: ["default_language", "languages", "content_types"],
+      additionalProperties: false,
+    },
+    metaDefinition: {
+      order: ["content_types", "languages", "default_language"],
+      propertiesConfig: {
+        languages: {
+          label: i18n.t("Languages"),
+          unique: false,
+          helpText: "",
+          multiple: true,
+          inputType: "select",
+          useOptionsWithLabels: true,
+          optionsWithLabels: countryOptions,
+        },
+        default_language: {
+          label: i18n.t("DefaultLanguage"),
+          unique: false,
+          helpText: "",
+          isMultiple: false,
+          inputType: "select",
+          options: [],
+        },
+        content_types: {
+          label: i18n.t("ContentTypes"),
+          unique: false,
+          helpText: "",
+          multiple: true,
+          inputType: "select",
+          optionsWithLabels: contentTypes,
+          useOptionsWithLabels: true,
+        },
       },
     },
-  },
-});
+  };
+};

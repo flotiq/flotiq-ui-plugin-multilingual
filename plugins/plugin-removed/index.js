@@ -5,25 +5,27 @@ import {
   getUpdateData,
 } from "../../common/content-type-parser";
 import { errorModal } from "../../common/warning-modal";
+import { allLngValue } from "..";
 
 export const handleRemovedEvent = async (
   client,
   { getPluginSettings, openModal },
 ) => {
-  const config = JSON.parse(getPluginSettings() || "{}").config;
-  if (!config?.length) return;
+  const pluginSettings = JSON.parse(getPluginSettings() || "{}");
 
   let showErrorModal = false;
 
   try {
-    const contentTypeNames = config
-      .map(({ content_type }) => content_type)
-      .filter((ctd) => ctd);
+    const contentTypeNames = pluginSettings.content_types || [];
 
-    const { body, ok } = await client.getContentTypes({
-      names: contentTypeNames,
-      limit: contentTypeNames.length,
-    });
+    const { body, ok } = await client.getContentTypes(
+      contentTypeNames.includes(allLngValue)
+        ? { limit: 10000, internal: false }
+        : {
+            names: contentTypeNames,
+            limit: contentTypeNames.length,
+          },
+    );
 
     if (!ok) {
       throw new Error(body);
@@ -35,7 +37,7 @@ export const handleRemovedEvent = async (
     }, {});
 
     const ctdsToRemove = await getCtdsToRemove(
-      config,
+      contentTypeNames,
       contentTypesAcc,
       openModal,
     );
@@ -43,7 +45,6 @@ export const handleRemovedEvent = async (
     const ctdsWithoutTranslations = getUpdateData(
       ctdsToRemove,
       contentTypesAcc,
-      true,
     );
 
     await Promise.all(

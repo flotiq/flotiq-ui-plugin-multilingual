@@ -15,26 +15,29 @@ export const getSubmitHandler =
   async (values) => {
     let close = true;
     const initialSettings = JSON.parse(getPluginSettings() || "{}");
-    const currentConfig = values.config || [];
 
     const contentTypesAcc = (contentTypes || []).reduce((acc, ctd) => {
+      if (ctd.internal) return acc;
       acc[ctd.name] = ctd;
       return acc;
     }, {});
 
-    const ctdsWithTranslations = getUpdateData(currentConfig, contentTypesAcc);
+    const ctdsWithTranslations = getUpdateData(
+      values.content_types,
+      contentTypesAcc,
+      values.default_language,
+    );
 
     const ctdsToRemove = await getCtdsToRemove(
-      currentConfig,
+      values.content_types,
       contentTypesAcc,
       openModal,
-      initialSettings,
+      initialSettings.content_types || [],
     );
 
     const ctdsWithoutTranslations = getUpdateData(
       ctdsToRemove,
       contentTypesAcc,
-      true,
     );
 
     try {

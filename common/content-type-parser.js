@@ -1,19 +1,48 @@
+import { allLngValue } from "../plugins";
 import { showWarningModal } from "./warning-modal";
 
+export const getUpdateData = (
+  currentContentTypes,
+  contentTypesAcc,
+  defaultLanguage = "",
+) => {
+  const ctds = currentContentTypes.includes(allLngValue)
+    ? Object.keys(contentTypesAcc)
+    : currentContentTypes;
+
+  return ctds.map((contentType) => {
+    const ctd = contentTypesAcc[contentType];
+    const ctdClone = JSON.parse(JSON.stringify(ctd));
+
+    if (!defaultLanguage) removeTranslationsFromContetType(ctdClone);
+    else addTranslationsToContentType(ctdClone, defaultLanguage);
+
+    return { ctd, ctdClone };
+  });
+};
+
 export const getCtdsToRemove = async (
-  currentConfig,
+  currentContentTypes,
   contentTypesAcc,
   openModal,
-  initialSettings = null,
+  initialContentTypes = null,
 ) => {
-  let ctdRemoved = currentConfig;
+  const isAll = currentContentTypes.includes(allLngValue);
+  if (isAll && initialContentTypes) {
+    return [];
+  }
 
-  if (initialSettings) {
-    ctdRemoved = (initialSettings?.config || []).filter(
-      ({ content_type }) =>
-        !currentConfig.find(
-          ({ content_type: currentContentType }) =>
-            currentContentType === content_type,
+  let ctdRemoved = isAll ? Object.keys(contentTypesAcc) : currentContentTypes;
+
+  if (initialContentTypes) {
+    ctdRemoved = (
+      initialContentTypes.includes(allLngValue)
+        ? Object.keys(contentTypesAcc)
+        : initialContentTypes
+    ).filter(
+      (contentType) =>
+        !ctdRemoved.find(
+          (currentContentType) => currentContentType === contentType,
         ),
     );
   }
@@ -22,10 +51,7 @@ export const getCtdsToRemove = async (
 
   const removeTranslations = await showWarningModal(
     ctdRemoved
-      .map(
-        ({ content_type }) =>
-          contentTypesAcc[content_type]?.label || content_type,
-      )
+      .map((contentType) => contentTypesAcc[contentType]?.label || contentType)
       .join(", "),
     openModal,
   );
@@ -33,17 +59,6 @@ export const getCtdsToRemove = async (
   if (!removeTranslations) return [];
   return ctdRemoved;
 };
-
-export const getUpdateData = (config, contentTypesAcc, remove = false) =>
-  config.map(({ content_type, fields, default_language }) => {
-    const ctd = contentTypesAcc[content_type];
-    const ctdClone = JSON.parse(JSON.stringify(ctd));
-
-    if (remove) removeTranslationsFromContetType(ctdClone);
-    else addTranslationsToContentType(ctdClone, fields, default_language);
-
-    return { ctd, ctdClone };
-  });
 
 const removeTranslationsFromContetType = (contentType) => {
   contentType.metaDefinition.order = contentType.metaDefinition.order.filter(
@@ -58,12 +73,12 @@ const removeTranslationsFromContetType = (contentType) => {
   delete contentType.schemaDefinition.allOf[1].properties.__translations;
 };
 
-const addTranslationsToContentType = async (
-  contentType,
-  fieldKeys,
-  defaultLanguage,
-) => {
-  const translationPropertiesConfig = fieldKeys.reduce((config, key) => {
+const addTranslationsToContentType = async (contentType, defaultLanguage) => {
+  const order = contentType.metaDefinition.order.filter(
+    (key) => !["__translations", "__language"].includes(key),
+  );
+
+  const translationPropertiesConfig = order.reduce((config, key) => {
     config[key] = contentType.metaDefinition.propertiesConfig[key];
     return config;
   }, {});
@@ -75,12 +90,7 @@ const addTranslationsToContentType = async (
     unique: false,
     hidden: true,
     items: {
-      order: [
-        ...contentType.metaDefinition.order.filter((key) =>
-          fieldKeys.includes(key),
-        ),
-        "__language",
-      ],
+      order: [...order, "__language"],
       propertiesConfig: {
         ...translationPropertiesConfig,
         __language: {
@@ -97,7 +107,7 @@ const addTranslationsToContentType = async (
     contentType.metaDefinition.order.push("__translations");
   }
 
-  const translationProperties = fieldKeys.reduce((config, key) => {
+  const translationProperties = order.reduce((config, key) => {
     config[key] = contentType.schemaDefinition.allOf[1].properties[key];
     return config;
   }, {});
@@ -109,7 +119,9 @@ const addTranslationsToContentType = async (
     items: {
       type: "object",
       required: [
-        ...requiredFields.filter((key) => fieldKeys.includes(key)),
+        ...requiredFields.filter(
+          (key) => !["__translations", "__language"].includes(key),
+        ),
         "__language",
       ],
       properties: {
