@@ -20,51 +20,22 @@ const hasDefaultErrors = (formik) =>
   Object.keys(formik.errors).filter((name) => name !== "__translations")
     ?.length && formik.touched?.__translations;
 
-export const fieldDictionary = { current: null };
-
 export const handleCoFormConfig = async (
-  { name, config, formik, contentType },
-  contentTypeSettings,
+  { name, config, formik, contentType, loadedVersion },
+  defaultLanguage,
 ) => {
   if (!contentType.metaDefinition?.propertiesConfig?.__translations) return;
 
-  config.key = `${formLng.current}-${name}`;
+  config.key = `${loadedVersion || "new"}-${formLng.current}-${name}`;
 
   const defaultHasErrors = hasDefaultErrors(formik);
-  toggleErrorOnTab(contentTypeSettings.default_language, defaultHasErrors);
+  toggleErrorOnTab(defaultLanguage, defaultHasErrors);
 
   (formik.values.__translations || []).forEach(({ __language }, idx) => {
     toggleErrorOnTab(__language, !!formik.errors?.__translations?.[idx]);
   });
 
-  if (
-    !formLng.current ||
-    formLng.current === contentTypeSettings.default_language
-  ) {
-    return;
-  }
-
-  if (!fieldDictionary.current) {
-    fieldDictionary.current = contentTypeSettings.fields.reduce(
-      (acc, field) => {
-        acc[field] = true;
-        return acc;
-      },
-      {},
-    );
-  }
-
-  const isInTranlsations = fieldDictionary.current[name];
-
-  if (!isInTranlsations) {
-    const { listName } = name.match(/(?<listName>\w+)\[(\d+)\]/)?.groups || {};
-
-    if (listName) {
-      const listInTranlsation = fieldDictionary.current[listName];
-      if (listInTranlsation) return;
-    }
-
-    config.disabled = true;
+  if (!formLng.current || formLng.current === defaultLanguage) {
     return;
   }
 

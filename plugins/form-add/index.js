@@ -1,3 +1,4 @@
+import { allLngValue, lngDictionary } from "..";
 import {
   addElementToCache,
   getCachedElement,
@@ -11,14 +12,15 @@ export const formLng = {
   current: null,
 };
 
-const addToTranslations = (contentTypeSettings, formik, lngIndex) => {
-  const defaultObject = contentTypeSettings.fields.reduce(
-    (fields, currentFieldKey) => {
-      fields[currentFieldKey] = formik.values[currentFieldKey];
-      return fields;
-    },
-    {},
+const addToTranslations = (contentType, formik, lngIndex) => {
+  const order = contentType.metaDefinition.order.filter(
+    (key) => !["__translations", "__language"].includes(key),
   );
+
+  const defaultObject = order.reduce((fields, currentFieldKey) => {
+    fields[currentFieldKey] = formik.values[currentFieldKey];
+    return fields;
+  }, {});
 
   formik.setFieldValue(`__translations.[${lngIndex}]`, {
     ...defaultObject,
@@ -37,11 +39,11 @@ export const handleFormFieldAdd = (
   const pluginSettings = getPluginSettings();
   const parsedSettings = JSON.parse(pluginSettings || "{}");
 
-  const contentTypeSettings = parsedSettings?.config?.find(
-    ({ content_type }) => content_type === contentType?.name,
+  const isMultilingual = parsedSettings?.content_types?.find((ctd) =>
+    [allLngValue, contentType?.name].includes(ctd),
   );
 
-  if (!contentTypeSettings) return;
+  if (!isMultilingual) return;
 
   if (!contentType.metaDefinition?.propertiesConfig?.__translations) {
     const warningCacheKey = `${pluginInfo.id}-no-translations-warning`;
@@ -69,14 +71,14 @@ export const handleFormFieldAdd = (
     tabsContainer = document.createElement("div");
     tabsContainer.className = "plugin-multilingual-tabs";
 
-    const defaultLng = contentTypeSettings.default_language;
+    const defaultLng = parsedSettings.default_language;
     formLng.current = defaultLng;
 
-    for (const lng of contentTypeSettings.languages) {
+    for (const lng of parsedSettings.languages) {
       const lngItemButton = document.createElement("button");
       lngItemButton.className = "plugin-multilingual-tab__item";
       lngItemButton.setAttribute("data-language", lng);
-      lngItemButton.innerText = lng;
+      lngItemButton.innerText = lngDictionary.current[lng];
       lngItemButton.type = "button";
 
       if (lng === defaultLng) {
@@ -96,15 +98,15 @@ export const handleFormFieldAdd = (
 
         setTimeout(() => {
           if (formLng.current !== defaultLng) {
-            const indexInTranlsations = Object.values(
-              tabsData.formik.values.__translations,
+            const indexInTranlsations = (
+              tabsData.formik.values.__translations || []
             ).findIndex(({ __language }) => __language === formLng.current);
 
             if (indexInTranlsations < 0) {
               addToTranslations(
-                contentTypeSettings,
+                contentType,
                 tabsData.formik,
-                tabsData.formik.values.__translations.length,
+                tabsData.formik.values.__translations?.length || 0,
               );
             }
           }

@@ -1,31 +1,35 @@
-import { getCachedElement } from "../../../common/plugin-element-cache";
-import { validFieldsCacheKey } from "../../../common/valid-fields";
+import { allLngValue, lngDictionary } from "../..";
 
 export const handlePluginFormConfig = ({ name, config, formik }) => {
-  const { index, type } =
-    name.match(/config\[(?<index>\d+)\].(?<type>\w+)/)?.groups || {};
+  if (!name) return;
 
-  if (index == null || !type) return;
-
-  if (type === "content_type") {
+  if (name === "languages") {
     config.onChange = (_, value) => {
-      if (value == null) formik.setFieldValue(name, "");
-      else formik.setFieldValue(name, value);
-
-      formik.setFieldValue(`config[${index}].fields`, "");
+      if (value.length === 0) {
+        formik.setFieldValue("default_language", "");
+      }
+      formik.setFieldValue(name, value);
     };
-  } else if (type === "fields") {
-    const fieldOptions =
-      getCachedElement(validFieldsCacheKey)?.element?.fieldOptions;
+  } else if (name === "content_types") {
+    config.onChange = (_, value) => {
+      let sliceIndex = null;
+      const lastIndex = value.length - 1;
 
-    const ctd = formik.values.config[index].content_type;
+      if (lastIndex > 0) {
+        if (value[0] === allLngValue) {
+          sliceIndex = 1;
+        } else if (value[lastIndex] === allLngValue) {
+          sliceIndex = lastIndex;
+        }
+      }
 
-    config.options = fieldOptions?.[ctd] || [];
-    config.additionalHelpTextClasses = "break-normal";
-  } else if (type === "default_language") {
-    config.options = formik.values.config[index].languages.map((lng) => ({
-      value: lng,
-      label: lng,
+      formik.setFieldValue(name, sliceIndex ? value.slice(sliceIndex) : value);
+    };
+  } else if (name === "default_language") {
+    config.options = (formik.values.languages || []).map((key) => ({
+      value: key,
+      label: lngDictionary.current[key],
     }));
+    config.additionalDropdownClasses = "bottom-full top-auto";
   }
 };

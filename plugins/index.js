@@ -1,11 +1,23 @@
 import { registerFn } from "../common/plugin-element-cache";
 import pluginInfo from "../plugin-manifest.json";
+
 import cssString from "inline:./styles/style.css";
 import { handleManageSchema } from "./manage";
 import { handleFormFieldConfig } from "./form-config";
 import { handleFormFieldAdd } from "./form-add";
 import { handleRemovedEvent } from "./plugin-removed";
-import { fieldDictionary } from "./form-config/co-form";
+
+import i18n from "../i18n";
+import languages from "@cospired/i18n-iso-languages";
+import enLocaleLng from "@cospired/i18n-iso-languages/langs/en.json";
+import plLocaleLng from "@cospired/i18n-iso-languages/langs/pl.json";
+
+languages.registerLocale(enLocaleLng);
+languages.registerLocale(plLocaleLng);
+
+export const lngDictionary = { current: {} };
+
+export const allLngValue = "--all--";
 
 registerFn(pluginInfo, (handler, client, globals) => {
   /**
@@ -17,6 +29,20 @@ registerFn(pluginInfo, (handler, client, globals) => {
     style.textContent = cssString;
     document.head.appendChild(style);
   }
+
+  const language = globals.getLanguage();
+  if (language !== i18n.language) {
+    i18n.changeLanguage(language);
+  }
+
+  lngDictionary.current = languages.getNames(language);
+
+  handler.on("flotiq.language::changed", ({ language }) => {
+    if (language !== i18n.language) {
+      i18n.changeLanguage(language);
+      lngDictionary.current = languages.getNames(language);
+    }
+  });
 
   handler.on("flotiq.form.field::config", (data) =>
     handleFormFieldConfig(data, globals.getPluginSettings),
@@ -33,8 +59,4 @@ registerFn(pluginInfo, (handler, client, globals) => {
   handler.on("flotiq.plugin::removed", () =>
     handleRemovedEvent(client, globals),
   );
-
-  handler.on("flotiq.plugin.settings::changed", () => {
-    fieldDictionary.current = null;
-  });
 });

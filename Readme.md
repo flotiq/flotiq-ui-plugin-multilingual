@@ -7,19 +7,16 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 
 ## Configuration Steps
 
-1. First, select the Content Type.
-2. After selecting the Content Type, choose the fields that will be translated. If any field is not selected for translations, it will be disabled on the tab for another language.
-3. Add at least two languages and select the default language.
-4. After saving the settings, the Content Type is modified and a `__translations` field is added, containing an array of available translations. The translation language is available under the `__language` field in each `__translations` item.
+1. First, select the Content Types.
+2. Add at least two languages and select the default language.
+3. After saving the settings, the Content Types are modified and a `__translations` field is added, containing an array of available translations. The translation language is available under the `__language` field in each `__translations` item.
 
 <img src=".docs/configuration.png" alt="Multilingual plugin configuration" width="700"/>
 
 ## Special Fields
 
 * `__translations`: Contains an array of translations, excluding the default language, whose data is found in the object fields.
-* `__language`: Specifies the translation language.
-
-If a field is not selected for translations, it will not be visible in the __translations field and will only be available in the basic fields of the object for the default language.
+* `__language`: Specifies the translation language. Language is saved in ISO 639 language codes.
 
 > Warning! The __translations field should not be manually modified. After each change in the content type for translated fields, go to the plugin settings and save them again to properly update the translation fields.
 
@@ -50,7 +47,7 @@ Let's assume you have an object with `title` and `slug` fields. Before applying 
 }
 ```
 
-Now, let's consider you are adding two languages: `pl` and `en`, and your default language is `en`. You are choosing the `title` field to translate. After applying translations, the object will be:
+Now, let's consider that you are adding two languages: `Polish` and `English`, and your default language is `English`. After applying translations, the object will be:
 
 ```json
 {
@@ -58,7 +55,8 @@ Now, let's consider you are adding two languages: `pl` and `en`, and your defaul
    "slug": "my-first-blog-post",
    "__translations": [{
       "__language": "pl",
-      "title": "Mój pierwszy post na blogu"
+      "title": "Mój pierwszy post na blogu",
+      "slug": "my-first-blog-post",
    }]
 }
 ```

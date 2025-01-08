@@ -1,6 +1,7 @@
 import pluginInfo from "../../plugin-manifest.json";
 import { handleCoFormConfig } from "./co-form";
 import { handlePluginFormConfig } from "./plugin-form";
+import { allLngValue } from "..";
 
 export const handleFormFieldConfig = (data, getPluginSettings) => {
   if (
@@ -14,11 +15,11 @@ export const handleFormFieldConfig = (data, getPluginSettings) => {
   const pluginSettings = getPluginSettings();
   const parsedSettings = JSON.parse(pluginSettings || "{}");
 
-  const contentTypeSettings = parsedSettings?.config?.find(
-    ({ content_type }) => content_type === data?.contentType?.name,
+  const isMultilingual = parsedSettings?.content_types?.find((ctd) =>
+    [allLngValue, data?.contentType?.name].includes(ctd),
   );
 
-  if (!contentTypeSettings) return;
+  if (!isMultilingual) return;
 
-  handleCoFormConfig(data, contentTypeSettings);
+  handleCoFormConfig(data, parsedSettings.default_language);
 };

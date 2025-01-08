@@ -5,6 +5,11 @@
   display: flex;
 }
 
+.mode-dark .plugin-multilingual-tabs {
+  border-bottom-color: #1e293b;
+  color: #e5e7eb;
+}
+
 .plugin-multilingual-tab__item {
   padding: 16px 28px;
 }
