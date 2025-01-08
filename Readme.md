@@ -47,7 +47,7 @@ Let's assume you have an object with `title` and `slug` fields. Before applying 
 }
 ```
 
-Now, let's consider you are adding two languages: `Poish` and `English`, and your default language is `English`. You are choosing the `title` field to translate. After applying translations, the object will be:
+Now, let's consider that you are adding two languages: `Polish` and `English`, and your default language is `English`. After applying translations, the object will be:
 
 ```json
 {
@@ -55,7 +55,8 @@ Now, let's consider you are adding two languages: `Poish` and `English`, and you
    "slug": "my-first-blog-post",
    "__translations": [{
       "__language": "pl",
-      "title": "Mój pierwszy post na blogu"
+      "title": "Mój pierwszy post na blogu",
+      "slug": "my-first-blog-post",
    }]
 }
 ```
