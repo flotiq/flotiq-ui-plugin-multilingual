@@ -25,7 +25,7 @@ export const handleCoFormConfig = async (
   { name, config, formik, contentType, loadedVersion, contentObject },
   defaultLanguage,
 ) => {
-  if (!contentType.metaDefinition?.propertiesConfig?.__translations) return;
+  if (!contentType?.metaDefinition?.propertiesConfig?.__translations) return;
 
   const lngKey = getLanguageKey(contentType, contentObject);
 
