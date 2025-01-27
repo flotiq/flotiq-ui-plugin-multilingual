@@ -1,4 +1,5 @@
 import { allLngValue, lngDictionary } from "..";
+import { getLanguageKey } from "../../common/language";
 import {
   addElementToCache,
   getCachedElement,
@@ -8,11 +9,9 @@ import pluginInfo from "../../plugin-manifest.json";
 
 const selectedClass = "plugin-multilingual-tab__item--selected";
 
-export const formLng = {
-  current: null,
-};
+export const formLng = {};
 
-const addToTranslations = (contentType, formik, lngIndex) => {
+const addToTranslations = (contentType, formik, lngIndex, lngKey) => {
   const order = contentType.metaDefinition.order.filter(
     (key) => !["__translations", "__language"].includes(key),
   );
@@ -24,15 +23,15 @@ const addToTranslations = (contentType, formik, lngIndex) => {
 
   formik.setFieldValue(`__translations.[${lngIndex}]`, {
     ...defaultObject,
-    __language: formLng.current,
+    __language: formLng[lngKey],
   });
 };
 
 export const handleFormFieldAdd = (
-  { contentType, formik },
+  { contentType, formik, contentObject },
   getPluginSettings,
 ) => {
-  if (contentType?.nonCtdSchema) {
+  if (contentType?.nonCtdSchema || !contentType?.name) {
     return;
   }
 
@@ -40,13 +39,13 @@ export const handleFormFieldAdd = (
   const parsedSettings = JSON.parse(pluginSettings || "{}");
 
   const isMultilingual = parsedSettings?.content_types?.find((ctd) =>
-    [allLngValue, contentType?.name].includes(ctd),
+    [allLngValue, contentType.name].includes(ctd),
   );
 
   if (!isMultilingual) return;
 
   if (!contentType.metaDefinition?.propertiesConfig?.__translations) {
-    const warningCacheKey = `${pluginInfo.id}-no-translations-warning`;
+    const warningCacheKey = `${pluginInfo.id}-${contentType.name}-no-translations-warning`;
     let warning = getCachedElement(warningCacheKey)?.element;
 
     if (!warning) {
@@ -61,7 +60,9 @@ export const handleFormFieldAdd = (
     return warning;
   }
 
-  const dropdownCacheKey = `${pluginInfo.id}-language-tabs`;
+  const lngKey = getLanguageKey(contentType, contentObject);
+
+  const dropdownCacheKey = `${pluginInfo.id}-${contentType.name}-language-tabs`;
   let tabsContainer = getCachedElement(dropdownCacheKey)?.element;
   let tabsData = getCachedElement(dropdownCacheKey)?.data || {};
 
@@ -72,7 +73,7 @@ export const handleFormFieldAdd = (
     tabsContainer.className = "plugin-multilingual-tabs";
 
     const defaultLng = parsedSettings.default_language;
-    formLng.current = defaultLng;
+    formLng[lngKey] = defaultLng;
 
     for (const lng of parsedSettings.languages) {
       const lngItemButton = document.createElement("button");
@@ -89,7 +90,7 @@ export const handleFormFieldAdd = (
       }
 
       lngItemButton.onclick = (event) => {
-        formLng.current = lng;
+        formLng[lngKey] = lng;
 
         const slectedTab = tabsContainer.querySelector(`.${selectedClass}`);
         if (slectedTab) slectedTab.classList.toggle(selectedClass);
@@ -97,16 +98,17 @@ export const handleFormFieldAdd = (
         event.target.classList.toggle(selectedClass);
 
         setTimeout(() => {
-          if (formLng.current !== defaultLng) {
+          if (formLng[lngKey] !== defaultLng) {
             const indexInTranlsations = (
               tabsData.formik.values.__translations || []
-            ).findIndex(({ __language }) => __language === formLng.current);
+            ).findIndex(({ __language }) => __language === formLng[lngKey]);
 
             if (indexInTranlsations < 0) {
               addToTranslations(
                 contentType,
                 tabsData.formik,
                 tabsData.formik.values.__translations?.length || 0,
+                lngKey,
               );
             }
           }
