@@ -1,3 +1,4 @@
+import { getLanguageKey } from "../../../common/language";
 import { formLng } from "../../form-add";
 
 const errorClass = "plugin-multilingual-tab__item--error";
@@ -21,12 +22,14 @@ const hasDefaultErrors = (formik) =>
     ?.length && formik.touched?.__translations;
 
 export const handleCoFormConfig = async (
-  { name, config, formik, contentType, loadedVersion },
+  { name, config, formik, contentType, loadedVersion, contentObject },
   defaultLanguage,
 ) => {
-  if (!contentType.metaDefinition?.propertiesConfig?.__translations) return;
+  if (!contentType?.metaDefinition?.propertiesConfig?.__translations) return;
 
-  config.key = `${loadedVersion || "new"}-${formLng.current}-${name}`;
+  const lngKey = getLanguageKey(contentType, contentObject);
+
+  config.key = `${loadedVersion || "new"}-${formLng[lngKey]}-${name}`;
 
   const defaultHasErrors = hasDefaultErrors(formik);
   toggleErrorOnTab(defaultLanguage, defaultHasErrors);
@@ -35,12 +38,12 @@ export const handleCoFormConfig = async (
     toggleErrorOnTab(__language, !!formik.errors?.__translations?.[idx]);
   });
 
-  if (!formLng.current || formLng.current === defaultLanguage) {
+  if (!formLng[lngKey] || formLng[lngKey] === defaultLanguage) {
     return;
   }
 
   const translationIndex = formik.values.__translations?.findIndex(
-    ({ __language }) => __language === formLng.current,
+    ({ __language }) => __language === formLng[lngKey],
   );
 
   const lngIndex =
