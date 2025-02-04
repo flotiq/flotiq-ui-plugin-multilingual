@@ -10,6 +10,7 @@ i18n.init({
         ContentTypes: "Content Type",
         ContentTypeUpdateError:
           "Cannot update {{name}} Content Type Definition. Please, try again later.",
+        Default: "Default",
         DefaultLanguage: "Default language",
         DeleteTranslations: {
           Content:
@@ -43,6 +44,7 @@ i18n.init({
         ContentTypes: "Typ zawartości",
         ContentTypeUpdateError:
           "Coś poszło nie tak podczas aktualizacji definicji typu {{name}}. Spróbuj ponownie później.",
+        Default: "Domyślny",
         DefaultLanguage: "Domyślny język",
         DeleteTranslations: {
           Content:
