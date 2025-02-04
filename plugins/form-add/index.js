@@ -85,7 +85,7 @@ export const handleFormFieldAdd = (
       if (lng === defaultLng) {
         lngItemButton.classList.toggle(selectedClass);
         lngItemButton.classList.toggle(
-          "plugin-multilingual-tab__item--default",
+          "plugin-multilingual-tab__item--default-item",
         );
       }
 
