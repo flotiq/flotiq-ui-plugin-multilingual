@@ -28,7 +28,7 @@ const addToTranslations = (contentType, formik, lngIndex, lngKey) => {
 };
 
 export const handleFormFieldAdd = (
-  { contentType, formik, contentObject },
+  { contentType, formik, contentObject, formUniqueKey },
   getPluginSettings,
 ) => {
   if (contentType?.nonCtdSchema || !contentType?.name) {
@@ -60,9 +60,9 @@ export const handleFormFieldAdd = (
     return warning;
   }
 
-  const lngKey = getLanguageKey(contentType, contentObject);
+  const lngKey = getLanguageKey(contentType, contentObject, formUniqueKey);
 
-  const dropdownCacheKey = `${pluginInfo.id}-${contentType.name}-language-tabs`;
+  const dropdownCacheKey = `${pluginInfo.id}-${contentType.name}-${formUniqueKey}-language-tabs`;
   let tabsContainer = getCachedElement(dropdownCacheKey)?.element;
   let tabsData = getCachedElement(dropdownCacheKey)?.data || {};
 
