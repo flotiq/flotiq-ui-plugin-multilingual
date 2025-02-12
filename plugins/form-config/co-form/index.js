@@ -22,14 +22,14 @@ const hasDefaultErrors = (formik) =>
     ?.length && formik.touched?.__translations;
 
 export const handleCoFormConfig = async (
-  { name, config, formik, contentType, loadedVersion, contentObject },
+  { name, config, formik, contentType, contentObject, formUniqueKey },
   defaultLanguage,
 ) => {
   if (!contentType?.metaDefinition?.propertiesConfig?.__translations) return;
 
-  const lngKey = getLanguageKey(contentType, contentObject);
+  const lngKey = getLanguageKey(contentType, contentObject, formUniqueKey);
 
-  config.key = `${loadedVersion || "new"}-${formLng[lngKey]}-${name}`;
+  config.key = `${formUniqueKey || "new"}-${formLng[lngKey]}-${name}`;
 
   const defaultHasErrors = hasDefaultErrors(formik);
   toggleErrorOnTab(defaultLanguage, defaultHasErrors);

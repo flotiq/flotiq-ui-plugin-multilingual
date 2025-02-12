@@ -1,2 +1,2 @@
-export const getLanguageKey = (contentType, contentObject) =>
-  `${contentType.name}-${contentObject?.id || "new"}`;
+export const getLanguageKey = (contentType, contentObject, formUniqueKey) =>
+  `${contentType.name}-${contentObject?.id || "new"}-${formUniqueKey}`;
