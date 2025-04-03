@@ -11,7 +11,13 @@ const selectedClass = "plugin-multilingual-tab__item--selected";
 
 export const formLng = {};
 
-const addToTranslations = (contentType, formik, lngIndex, lngKey) => {
+const addToTranslations = (
+  contentType,
+  formik,
+  lngIndex,
+  lngKey,
+  initialData,
+) => {
   const order = contentType.metaDefinition.order.filter(
     (key) => !["__translations", "__language"].includes(key),
   );
@@ -21,14 +27,26 @@ const addToTranslations = (contentType, formik, lngIndex, lngKey) => {
     return fields;
   }, {});
 
-  formik.setFieldValue(`__translations.[${lngIndex}]`, {
+  const language = formLng[lngKey];
+  const newTranslation = {
     ...defaultObject,
-    __language: formLng[lngKey],
+    __language: language,
+  };
+  const fieldName = `__translations.[${lngIndex}]`;
+
+  formik.setFieldValue(fieldName, newTranslation);
+
+  window.FlotiqPlugins.run("flotiq-multilingual.translation::added", {
+    fieldName,
+    newTranslation,
+    contentType,
+    initialData,
+    language,
   });
 };
 
 export const handleFormFieldAdd = (
-  { contentType, formik, contentObject, formUniqueKey },
+  { contentType, formik, initialData, formUniqueKey },
   getPluginSettings,
 ) => {
   if (contentType?.nonCtdSchema || !contentType?.name) {
@@ -60,7 +78,7 @@ export const handleFormFieldAdd = (
     return warning;
   }
 
-  const lngKey = getLanguageKey(contentType, contentObject, formUniqueKey);
+  const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
 
   const dropdownCacheKey = `${pluginInfo.id}-${contentType.name}-${formUniqueKey}-language-tabs`;
   let tabsContainer = getCachedElement(dropdownCacheKey)?.element;
@@ -109,6 +127,7 @@ export const handleFormFieldAdd = (
                 tabsData.formik,
                 tabsData.formik.values.__translations?.length || 0,
                 lngKey,
+                initialData,
               );
             }
           }

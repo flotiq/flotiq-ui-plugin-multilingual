@@ -22,12 +22,12 @@ const hasDefaultErrors = (formik) =>
     ?.length && formik.touched?.__translations;
 
 export const handleCoFormConfig = async (
-  { name, config, formik, contentType, contentObject, formUniqueKey },
+  { name, config, formik, contentType, initialData, formUniqueKey },
   defaultLanguage,
 ) => {
   if (!contentType?.metaDefinition?.propertiesConfig?.__translations) return;
 
-  const lngKey = getLanguageKey(contentType, contentObject, formUniqueKey);
+  const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
 
   config.key = `${formUniqueKey || "new"}-${formLng[lngKey]}-${name}`;
 

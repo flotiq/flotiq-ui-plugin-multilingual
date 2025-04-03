@@ -3,6 +3,7 @@
 # Multilingual Plugin
 
 ## Overview
+
 Multilingual Plugin is an advanced plugin that allows easy addition and management of translations while editing objects. It supports multiple languages and enables users to define and manage their own language sets.
 
 ## Configuration Steps
@@ -15,16 +16,16 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 
 ## Special Fields
 
-* `__translations`: Contains an array of translations, excluding the default language, whose data is found in the object fields.
-* `__language`: Specifies the translation language. Language is saved in ISO 639 language codes.
+- `__translations`: Contains an array of translations, excluding the default language, whose data is found in the object fields.
+- `__language`: Specifies the translation language. Language is saved in ISO 639 language codes.
 
-> Warning! The __translations field should not be manually modified. After each change in the content type for translated fields, go to the plugin settings and save them again to properly update the translation fields.
+> Warning! The \_\_translations field should not be manually modified. After each change in the content type for translated fields, go to the plugin settings and save them again to properly update the translation fields.
 
 ## Plugin Usage
 
-* When adding/editing an object, tabs with the previously selected languages will be available. The default language is always in the first tab.
-* Clicking on another language tab will add the translated fields, populated with the current fields in the default language.
-* If we return to the default language tab, make changes, and go back to another language tab, the previously filled fields will not be overwritten.
+- When adding/editing an object, tabs with the previously selected languages will be available. The default language is always in the first tab.
+- Clicking on another language tab will add the translated fields, populated with the current fields in the default language.
+- If we return to the default language tab, make changes, and go back to another language tab, the previously filled fields will not be overwritten.
 
 <img src=".docs/default-lng.png" alt="Default language tab" width="400"/>
 <img src=".docs/translation-lng.png" alt="Translation language tab" width="400"/>
@@ -33,8 +34,8 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 
 When removing the content type from the settings, you will be asked whether to keep the translations or remove them:
 
-* Removing: Modifies the content type, removes the `__translations` field, and deletes the collected data.
-* Keeping: If you choose the "Keep translation fields" option, you can remove `__translations` field later manually by editing the content type.
+- Removing: Modifies the content type, removes the `__translations` field, and deletes the collected data.
+- Keeping: If you choose the "Keep translation fields" option, you can remove `__translations` field later manually by editing the content type.
 
 ## Example object
 
@@ -42,8 +43,8 @@ Let's assume you have an object with `title` and `slug` fields. Before applying 
 
 ```json
 {
-   "title": "My first blog post",
-   "slug": "my-first-blog-post"
+  "title": "My first blog post",
+  "slug": "my-first-blog-post"
 }
 ```
 
@@ -51,15 +52,32 @@ Now, let's consider that you are adding two languages: `Polish` and `English`, a
 
 ```json
 {
-   "title": "My first blog post",
-   "slug": "my-first-blog-post",
-   "__translations": [{
+  "title": "My first blog post",
+  "slug": "my-first-blog-post",
+  "__translations": [
+    {
       "__language": "pl",
       "title": "Mój pierwszy post na blogu",
-      "slug": "my-first-blog-post",
-   }]
+      "slug": "my-first-blog-post"
+    }
+  ]
 }
 ```
+
+## Plugins interaction
+
+Multilingual Plugin sends information to other plugins when a new translation has been added.
+To use this information in your plugin, you need to listen to the event `flotiq-multilingual.translation::added`.
+
+Event properties:
+
+| Property       | Description                                                                                         |
+| -------------- | --------------------------------------------------------------------------------------------------- |
+| fieldName      | Translation field name with language index, eg. `__translations.[0]`                                |
+| newTranslation | Full translation object                                                                             |
+| contentType    | Content type that includes the field                                                                |
+| initialData    | Initial data of the content object. This will be either an empty object or the object being edited. |
+| language       | Language in ISO 639 language code                                                                   |
 
 ## Development
 
@@ -74,8 +92,8 @@ Now, let's consider that you are adding two languages: `Polish` and `English`, a
 
 Dev environment is configured to use:
 
-* `prettier` - best used with automatic format on save in IDE
-* `eslint` - it is built into both `start` and `build` commands
+- `prettier` - best used with automatic format on save in IDE
+- `eslint` - it is built into both `start` and `build` commands
 
 ### Output
 
@@ -87,7 +105,7 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
 
 ### Loading the plugin
 
-**Warning:** While developing, you can use  `https://localhost:3053/plugin-manifest.json` address to load the plugin manifest. Make sure your browser trusts the local certificate on the latter, to be able to use it e.g. with `https://editor.flotiq.com`
+**Warning:** While developing, you can use `https://localhost:3053/plugin-manifest.json` address to load the plugin manifest. Make sure your browser trusts the local certificate on the latter, to be able to use it e.g. with `https://editor.flotiq.com`
 
 #### URL
 
@@ -97,7 +115,7 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
 2. Open Chrome Dev console
 3. Execute the following script
    ```javascript
-   FlotiqPlugins.loadPlugin('plugin-id', '<URL TO COMPILED JS>')
+   FlotiqPlugins.loadPlugin("plugin-id", "<URL TO COMPILED JS>");
    ```
 4. Navigate to the view that is modified by the plugin
 
@@ -105,7 +123,7 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
 
 1. Open Flotiq editor
 2. Open Chrome Dev console
-3. Paste the content of `dist/index.js` 
+3. Paste the content of `dist/index.js`
 4. Navigate to the view that is modified by the plugin
 
 #### Deployment
