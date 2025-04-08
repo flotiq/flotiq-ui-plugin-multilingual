@@ -37,7 +37,7 @@ registerFn(pluginInfo, (handler, client, globals) => {
 
   lngDictionary.current = languages.getNames(language);
 
-  lngDictionary.current['default'] = i18n.t("Default");
+  lngDictionary.current["default"] = i18n.t("Default");
 
   handler.on("flotiq.language::changed", ({ language }) => {
     if (language !== i18n.language) {
