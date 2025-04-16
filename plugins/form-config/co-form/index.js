@@ -51,7 +51,10 @@ export const handleCoFormConfig = async (
       ? translationIndex
       : formik.values.__translations.length;
 
-  const fieldName = `__translations.[${lngIndex}].${name}`;
+  const translationFieldName = `__translations.[${lngIndex}]`;
+  if (name.includes(translationFieldName)) return;
+
+  const fieldName = `${translationFieldName}.${name}`;
 
   if (fieldName !== config.name) {
     config.name = fieldName;
