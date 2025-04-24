@@ -1,5 +1,4 @@
-import { getLanguageKey } from "../../../common/language";
-import { formLng } from "../../form-add";
+import { formikCache, formLng, getLanguageKey } from "../../../common/translations";
 
 const errorClass = "plugin-multilingual-tab__item--error";
 
@@ -28,6 +27,8 @@ export const handleCoFormConfig = async (
   if (!contentType?.metaDefinition?.propertiesConfig?.__translations) return;
 
   const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
+
+  formikCache[lngKey] = formik;
 
   config.key = `${formUniqueKey || "new"}-${formLng[lngKey]}-${name}`;
 
