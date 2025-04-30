@@ -11,6 +11,11 @@ import i18n from "../i18n";
 import languages from "@cospired/i18n-iso-languages";
 import enLocaleLng from "@cospired/i18n-iso-languages/langs/en.json";
 import plLocaleLng from "@cospired/i18n-iso-languages/langs/pl.json";
+import {
+  formikCache,
+  getLanguageKey,
+  updateTranlsations,
+} from "../common/translations";
 
 languages.registerLocale(enLocaleLng);
 languages.registerLocale(plLocaleLng);
@@ -60,5 +65,19 @@ registerFn(pluginInfo, (handler, client, globals) => {
 
   handler.on("flotiq.plugin::removed", () =>
     handleRemovedEvent(client, globals),
+  );
+
+  handler.on(
+    "flotiq-multilingual.translation::update",
+    ({ contentType, initialData, formUniqueKey, language, values }) => {
+      const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
+      updateTranlsations(
+        language,
+        values,
+        contentType,
+        formikCache[lngKey],
+        initialData,
+      );
+    },
   );
 });

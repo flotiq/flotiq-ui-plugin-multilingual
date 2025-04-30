@@ -64,10 +64,12 @@ Now, let's consider that you are adding two languages: `Polish` and `English`, a
 }
 ```
 
-## Plugins interaction
+## Plugins events
 
-Multilingual Plugin sends information to other plugins when a new translation has been added.
-To use this information in your plugin, you need to listen to the event `flotiq-multilingual.translation::added`.
+### `flotiq-multilingual.translation::changed`
+
+Multilingual Plugin sends information to other plugins when a translation has been updated (or added).
+To use this information in your plugin, you need to listen to the event `flotiq-multilingual.translation::changed`.
 
 Event properties:
 
@@ -78,6 +80,22 @@ Event properties:
 | contentType    | Content type that includes the field                                                                |
 | initialData    | Initial data of the content object. This will be either an empty object or the object being edited. |
 | language       | Language in ISO 639 language code                                                                   |
+
+
+### `flotiq-multilingual.translation::update`
+
+Multilingual Plugin is listening to event from other plugins for updating translations.
+If you want Multilingual Plugin to create or update existing translation use `flotiq-multilingual.translation::update` event.
+
+Event properties:
+
+| Property       | Description                                                                                         |
+| -------------- | --------------------------------------------------------------------------------------------------- |
+| values         | Translated fields, eg. {"name": "New value"}                                                        |
+| language       | Language in ISO 639 language code                                                                   |
+| contentType    | Content type that includes the field                                                                |
+| initialData    | Initial data of the content object. This will be either an empty object or the object being edited. |
+| formUniqueKey  | Unique key from flotiq form events.                                                                 |
 
 ## Development
 

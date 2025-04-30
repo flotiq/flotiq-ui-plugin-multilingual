@@ -1,5 +1,5 @@
 import { allLngValue, lngDictionary } from "..";
-import { getLanguageKey } from "../../common/language";
+import { addToTranslations, formLng, getLanguageKey } from "../../common/translations";
 import {
   addElementToCache,
   getCachedElement,
@@ -8,42 +8,6 @@ import i18n from "../../i18n";
 import pluginInfo from "../../plugin-manifest.json";
 
 const selectedClass = "plugin-multilingual-tab__item--selected";
-
-export const formLng = {};
-
-const addToTranslations = (
-  contentType,
-  formik,
-  lngIndex,
-  lngKey,
-  initialData,
-) => {
-  const order = contentType.metaDefinition.order.filter(
-    (key) => !["__translations", "__language"].includes(key),
-  );
-
-  const defaultObject = order.reduce((fields, currentFieldKey) => {
-    fields[currentFieldKey] = formik.values[currentFieldKey];
-    return fields;
-  }, {});
-
-  const language = formLng[lngKey];
-  const newTranslation = {
-    ...defaultObject,
-    __language: language,
-  };
-  const fieldName = `__translations.[${lngIndex}]`;
-
-  formik.setFieldValue(fieldName, newTranslation);
-
-  window.FlotiqPlugins.run("flotiq-multilingual.translation::added", {
-    fieldName,
-    newTranslation,
-    contentType,
-    initialData,
-    language,
-  });
-};
 
 export const handleFormFieldAdd = (
   { contentType, formik, initialData, formUniqueKey },
@@ -125,8 +89,7 @@ export const handleFormFieldAdd = (
               addToTranslations(
                 contentType,
                 tabsData.formik,
-                tabsData.formik.values.__translations?.length || 0,
-                lngKey,
+                formLng[lngKey],
                 initialData,
               );
             }
