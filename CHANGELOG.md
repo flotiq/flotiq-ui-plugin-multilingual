@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [0.8.0]
+### Changed
+* plugin adapted to new form API #26710
+
 ## [0.7.0]
 ### Added
 * plugin will now listen to event form other plugins for updating translations #26441

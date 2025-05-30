@@ -1,4 +1,8 @@
-import { formikCache, formLng, getLanguageKey } from "../../../common/translations";
+import {
+  formikCache,
+  formLng,
+  getLanguageKey,
+} from "../../../common/translations";
 
 const errorClass = "plugin-multilingual-tab__item--error";
 
@@ -17,8 +21,8 @@ const toggleErrorOnTab = (lng, error) => {
 };
 
 const hasDefaultErrors = (formik) =>
-  Object.keys(formik.errors).filter((name) => name !== "__translations")
-    ?.length && formik.touched?.__translations;
+  Object.keys(formik.errors).filter((name) => !name.includes("__translations"))
+    ?.length;
 
 export const handleCoFormConfig = async (
   { name, config, formik, contentType, initialData, formUniqueKey },
@@ -36,7 +40,18 @@ export const handleCoFormConfig = async (
   toggleErrorOnTab(defaultLanguage, defaultHasErrors);
 
   (formik.values.__translations || []).forEach(({ __language }, idx) => {
-    toggleErrorOnTab(__language, !!formik.errors?.__translations?.[idx]);
+    toggleErrorOnTab(
+      __language,
+      /**
+       * @TODO
+       * After refactoring forms remove the line comaptibile with formik,
+       * !!formik.errors?.__translations?.[idx]
+       */
+      !!formik.errors?.__translations?.[idx] ||
+        Object.keys(formik.errors).filter((name) =>
+          name.includes(`__translations[${idx}]`),
+        )?.length,
+    );
   });
 
   if (!formLng[lngKey] || formLng[lngKey] === defaultLanguage) {
@@ -52,7 +67,7 @@ export const handleCoFormConfig = async (
       ? translationIndex
       : formik.values.__translations.length;
 
-  const translationFieldName = `__translations.[${lngIndex}]`;
+  const translationFieldName = `__translations[${lngIndex}]`;
   if (name.includes(translationFieldName)) return;
 
   const fieldName = `${translationFieldName}.${name}`;

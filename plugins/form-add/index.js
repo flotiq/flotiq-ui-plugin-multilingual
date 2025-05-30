@@ -1,5 +1,9 @@
 import { allLngValue, lngDictionary } from "..";
-import { addToTranslations, formLng, getLanguageKey } from "../../common/translations";
+import {
+  addToTranslations,
+  formLng,
+  getLanguageKey,
+} from "../../common/translations";
 import {
   addElementToCache,
   getCachedElement,
@@ -78,6 +82,11 @@ export const handleFormFieldAdd = (
         if (slectedTab) slectedTab.classList.toggle(selectedClass);
 
         event.target.classList.toggle(selectedClass);
+
+        /**
+         * This is needed to rerender all fields in form
+         */
+        tabsData.formik.setValues({ ...tabsData.formik.values });
 
         setTimeout(() => {
           if (formLng[lngKey] !== defaultLng) {
