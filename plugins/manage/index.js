@@ -27,7 +27,7 @@ export const handleManageSchema = (data, client, globals) => {
 
     formSchema = {
       options: {
-        disbaledBuildInValidation: true,
+        disabledBuildInValidation: true,
         onValidate,
         onSubmit,
       },
