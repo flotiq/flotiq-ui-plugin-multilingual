@@ -1,6 +1,6 @@
 import pluginInfo from "../../plugin-manifest.json";
 
-export const handleFormFieldListenrsAdd = ({ contentType, formik, name }) => {
+export const handleFormFieldListenersAdd = ({ contentType, formik, name }) => {
   if (name && contentType?.id === pluginInfo.id && contentType?.nonCtdSchema) {
     if (name === "languages") {
       return {
