@@ -1,8 +1,8 @@
 {
-  "id": "flotiq.multilingual",
+  "id": "flotiq.multilingual-2",
   "name": "Multilingual plugin",
   "description": "Multilingual Plugin is an advanced plugin that allows easy addition and management of translations while editing objects. It supports multiple languages and enables users to define and manage their own language sets.",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "repository": "https://github.com/flotiq/flotiq-ui-plugin-multilingual",
   "url": "https://localhost:3053/index.js",
   "permissions": [

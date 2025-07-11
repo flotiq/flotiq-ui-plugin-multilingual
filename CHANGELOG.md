@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [0.8.2]
+### Added
+* Montenegrin language
+
 ## [0.8.1]
 ### Added
 * compatibility to newest Flotiq form api
@@ -17,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * plugin will now listen to event form other plugins for updating translations #26441
 
-### Chnaged
+### Changed
 * renamed event about newly added translations #26441
 
 ## [0.6.1]

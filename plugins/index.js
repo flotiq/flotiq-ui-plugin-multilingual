@@ -18,6 +18,9 @@ import {
   updateTranlsations,
 } from "../common/translations";
 
+enLocaleLng.languages.cnr = 'Montenegrin';
+plLocaleLng.languages.cnr = 'czarnogórski';
+
 languages.registerLocale(enLocaleLng);
 languages.registerLocale(plLocaleLng);
 
