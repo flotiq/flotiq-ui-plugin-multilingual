@@ -7,17 +7,24 @@ import {
 import {
   addElementToCache,
   getCachedElement,
+  updateDataInCache,
 } from "../../common/plugin-element-cache";
 import i18n from "../../i18n";
 import pluginInfo from "../../plugin-manifest.json";
 
 const selectedClass = "plugin-multilingual-tab__item--selected";
 
+const lastLng = {};
+
 export const handleFormFieldAdd = (
   { contentType, formik, initialData, formUniqueKey },
   getPluginSettings,
 ) => {
-  if (contentType?.nonCtdSchema || !contentType?.name) {
+  if (
+    contentType?.nonCtdSchema ||
+    !contentType?.name ||
+    contentType?.internal
+  ) {
     return;
   }
 
@@ -59,7 +66,7 @@ export const handleFormFieldAdd = (
     tabsContainer.className = "plugin-multilingual-tabs";
 
     const defaultLng = parsedSettings.default_language;
-    formLng[lngKey] = defaultLng;
+    formLng[lngKey] = lastLng[contentType.name] || defaultLng;
 
     for (const lng of parsedSettings.languages) {
       const lngItemButton = document.createElement("button");
@@ -69,10 +76,13 @@ export const handleFormFieldAdd = (
       lngItemButton.type = "button";
 
       if (lng === defaultLng) {
-        lngItemButton.classList.toggle(selectedClass);
         lngItemButton.classList.toggle(
           "plugin-multilingual-tab__item--default-item",
         );
+      }
+
+      if (lng === formLng[lngKey]) {
+        lngItemButton.classList.toggle(selectedClass);
       }
 
       lngItemButton.onclick = (event) => {
@@ -120,9 +130,20 @@ export const handleFormFieldAdd = (
 
       tabsContainer.appendChild(lngItemButton);
     }
+
+    addElementToCache(tabsContainer, dropdownCacheKey, tabsData, () => {
+      if (
+        !initialData &&
+        window.location.pathname.includes(`/edit/${contentType.name}/`)
+      ) {
+        lastLng[contentType.name] = formLng[lngKey];
+      } else {
+        delete lastLng[contentType.name];
+      }
+    });
   }
 
-  addElementToCache(tabsContainer, dropdownCacheKey, tabsData);
+  updateDataInCache(dropdownCacheKey, tabsData);
 
   return tabsContainer;
 };
