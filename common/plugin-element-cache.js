@@ -4,7 +4,7 @@ export const removeRoot = (key) => {
   delete appRoots[key];
 };
 
-export const addElementToCache = (element, key, data = {}) => {
+export const addElementToCache = (element, key, data = {}, onRemove = null) => {
   appRoots[key] = {
     element,
     data,
@@ -23,8 +23,15 @@ export const addElementToCache = (element, key, data = {}) => {
     element.addEventListener("flotiq.detached", () => {
       detachTimeoutId = setTimeout(() => {
         removeRoot(key);
+        onRemove?.();
       }, 50);
     });
+  }
+};
+
+export const updateDataInCache = (key, newData) => {
+  if (appRoots[key]) {
+    appRoots[key].data = newData;
   }
 };
 
