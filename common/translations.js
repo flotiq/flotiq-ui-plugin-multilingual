@@ -1,23 +1,25 @@
 export const formLng = {};
-export const formikCache = {};
+export const formCache = {};
 
 export const getLanguageKey = (contentType, contentObject, formUniqueKey) =>
   `${contentType.name}-${contentObject?.id || "new"}-${formUniqueKey}`;
 
 export const addToTranslations = (
   contentType,
-  formik,
+  form,
   language,
   initialData,
   translations = {},
 ) => {
-  const lngIndex = formik.values.__translations?.length || 0;
+  const values = form.getValues();
+
+  const lngIndex = values.__translations?.length || 0;
   const order = contentType.metaDefinition.order.filter(
     (key) => !["__translations", "__language"].includes(key),
   );
 
   const defaultObject = order.reduce((fields, currentFieldKey) => {
-    fields[currentFieldKey] = formik.values[currentFieldKey];
+    fields[currentFieldKey] = values[currentFieldKey];
     return fields;
   }, {});
 
@@ -28,7 +30,7 @@ export const addToTranslations = (
   };
 
   const fieldName = `__translations.[${lngIndex}]`;
-  formik.setFieldValue(fieldName, newTranslation);
+  form.setFieldValue(fieldName, newTranslation);
 
   window.FlotiqPlugins.run(`flotiq-multilingual.translation::changed`, {
     fieldName,
@@ -43,21 +45,23 @@ export const updateTranlsations = (
   language,
   values,
   contentType,
-  formik,
+  form,
   initialData,
 ) => {
-  const languageIndex = (formik.values.__translations || []).findIndex(
+  const formValues = form.getValues();
+
+  const languageIndex = (formValues.__translations || []).findIndex(
     ({ __language }) => __language === language,
   );
 
   if (languageIndex > -1) {
     const newTranslation = {
-      ...formik.values.__translations[languageIndex],
+      ...formValues.__translations[languageIndex],
       ...values,
     };
 
     const fieldName = `__translations.[${languageIndex}]`;
-    formik.setFieldValue(fieldName, newTranslation);
+    form.setFieldValue(fieldName, newTranslation);
 
     window.FlotiqPlugins.run(`flotiq-multilingual.translation::changed`, {
       fieldName,
@@ -67,6 +71,6 @@ export const updateTranlsations = (
       language,
     });
   } else {
-    addToTranslations(contentType, formik, language, initialData, values);
+    addToTranslations(contentType, form, language, initialData, values);
   }
 };

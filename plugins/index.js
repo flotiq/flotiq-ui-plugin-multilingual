@@ -13,13 +13,13 @@ import languages from "@cospired/i18n-iso-languages";
 import enLocaleLng from "@cospired/i18n-iso-languages/langs/en.json";
 import plLocaleLng from "@cospired/i18n-iso-languages/langs/pl.json";
 import {
-  formikCache,
+  formCache,
   getLanguageKey,
   updateTranlsations,
 } from "../common/translations";
 
-enLocaleLng.languages.cnr = 'Montenegrin';
-plLocaleLng.languages.cnr = 'czarnogórski';
+enLocaleLng.languages.cnr = "Montenegrin";
+plLocaleLng.languages.cnr = "czarnogórski";
 
 languages.registerLocale(enLocaleLng);
 languages.registerLocale(plLocaleLng);
@@ -83,7 +83,7 @@ registerFn(pluginInfo, (handler, client, globals) => {
         language,
         values,
         contentType,
-        formikCache[lngKey],
+        formCache[lngKey],
         initialData,
       );
     },
