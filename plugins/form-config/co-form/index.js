@@ -22,7 +22,6 @@ const toggleErrorOnTab = (lng, error) => {
 
 const hasDefaultErrors = (form) =>
   Object.keys(form.getErrors()).filter((name) => {
-    console.log(name, !name.includes("__translations"));
     return !name.includes("__translations");
   })?.length;
 
@@ -42,8 +41,6 @@ export const handleCoFormConfig = async (
   toggleErrorOnTab(defaultLanguage, defaultHasErrors);
 
   const translationFieldValue = form.getValue("__translations") || [];
-
-  console.log(form.getErrors(), defaultHasErrors);
 
   translationFieldValue.forEach(({ __language }, idx) => {
     toggleErrorOnTab(

@@ -7,8 +7,9 @@ export const handleFormFieldListenersAdd = ({ contentType, form, name }) => {
         onChange: ({ value }) => {
           if (value.length === 0) {
             form.setFieldValue("default_language", "");
+          } else {
+            form.rerenderForm();
           }
-          form.setFieldValue(name, value);
         },
       };
     } else if (name === "content_types") {
