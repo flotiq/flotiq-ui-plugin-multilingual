@@ -1,5 +1,5 @@
 import {
-  formikCache,
+  formCache,
   formLng,
   getLanguageKey,
 } from "../../../common/translations";
@@ -20,37 +20,34 @@ const toggleErrorOnTab = (lng, error) => {
   }
 };
 
-const hasDefaultErrors = (formik) =>
-  Object.keys(formik.errors).filter((name) => !name.includes("__translations"))
-    ?.length;
+const hasDefaultErrors = (form) =>
+  Object.keys(form.getErrors()).filter((name) => {
+    return !name.includes("__translations");
+  })?.length;
 
 export const handleCoFormConfig = async (
-  { name, config, formik, contentType, initialData, formUniqueKey },
+  { name, config, form, contentType, initialData, formUniqueKey },
   defaultLanguage,
 ) => {
   if (!contentType?.metaDefinition?.propertiesConfig?.__translations) return;
 
   const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
 
-  formikCache[lngKey] = formik;
+  formCache[lngKey] = form;
 
   config.key = `${formUniqueKey || "new"}-${formLng[lngKey]}-${name}`;
 
-  const defaultHasErrors = hasDefaultErrors(formik);
+  const defaultHasErrors = hasDefaultErrors(form);
   toggleErrorOnTab(defaultLanguage, defaultHasErrors);
 
-  (formik.values.__translations || []).forEach(({ __language }, idx) => {
+  const translationFieldValue = form.getValue("__translations") || [];
+
+  translationFieldValue.forEach(({ __language }, idx) => {
     toggleErrorOnTab(
       __language,
-      /**
-       * @TODO
-       * After refactoring forms remove the line comaptibile with formik,
-       * !!formik.errors?.__translations?.[idx]
-       */
-      !!formik.errors?.__translations?.[idx] ||
-        Object.keys(formik.errors).filter((name) =>
-          name.includes(`__translations[${idx}]`),
-        )?.length,
+      Object.keys(form.getErrors()).filter((name) =>
+        name.includes(`__translations[${idx}]`),
+      )?.length,
     );
   });
 
@@ -58,14 +55,12 @@ export const handleCoFormConfig = async (
     return;
   }
 
-  const translationIndex = formik.values.__translations?.findIndex(
+  const translationIndex = translationFieldValue.findIndex(
     ({ __language }) => __language === formLng[lngKey],
   );
 
   const lngIndex =
-    translationIndex > -1
-      ? translationIndex
-      : formik.values.__translations.length;
+    translationIndex > -1 ? translationIndex : translationFieldValue.length;
 
   const translationFieldName = `__translations[${lngIndex}]`;
   if (name.includes(translationFieldName)) return;
@@ -75,14 +70,14 @@ export const handleCoFormConfig = async (
   if (fieldName !== config.name) {
     config.name = fieldName;
 
-    const value = formik.values.__translations?.[lngIndex]?.[name];
+    const value = translationFieldValue[lngIndex]?.[name];
     if ("checked" in config) {
       config.checked = value;
     } else {
       config.value = value;
     }
 
-    const error = formik.errors.__translations?.[lngIndex]?.[name];
+    const error = form.getError("__translations")?.[lngIndex]?.[name];
     config.error = error;
   }
 };

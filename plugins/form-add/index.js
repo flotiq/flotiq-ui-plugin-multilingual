@@ -17,7 +17,7 @@ const selectedClass = "plugin-multilingual-tab__item--selected";
 const lastLng = {};
 
 export const handleFormFieldAdd = (
-  { contentType, formik, initialData, formUniqueKey },
+  { contentType, form, initialData, formUniqueKey },
   getPluginSettings,
 ) => {
   if (
@@ -59,7 +59,7 @@ export const handleFormFieldAdd = (
   let tabsContainer = getCachedElement(dropdownCacheKey)?.element;
   let tabsData = getCachedElement(dropdownCacheKey)?.data || {};
 
-  tabsData.formik = formik;
+  tabsData.form = form;
 
   if (!tabsContainer) {
     tabsContainer = document.createElement("div");
@@ -93,21 +93,16 @@ export const handleFormFieldAdd = (
 
         event.target.classList.toggle(selectedClass);
 
-        /**
-         * This is needed to rerender all fields in form
-         */
-        tabsData.formik.setValues({ ...tabsData.formik.values });
-
         setTimeout(() => {
           if (formLng[lngKey] !== defaultLng) {
             const indexInTranlsations = (
-              tabsData.formik.values.__translations || []
+              tabsData.form.getValues().__translations || []
             ).findIndex(({ __language }) => __language === formLng[lngKey]);
 
             if (indexInTranlsations < 0) {
               addToTranslations(
                 contentType,
-                tabsData.formik,
+                tabsData.form,
                 formLng[lngKey],
                 initialData,
               );
@@ -115,7 +110,7 @@ export const handleFormFieldAdd = (
           }
 
           const touchedFields = Object.keys(
-            tabsData.formik.errors || {},
+            tabsData.form.getErrors() || {},
           ).reduce(
             (acc, key) => {
               acc[key] = true;
@@ -124,7 +119,9 @@ export const handleFormFieldAdd = (
             { __translations: true },
           );
 
-          tabsData.formik.setTouched(touchedFields);
+          tabsData.form.setTouched(touchedFields);
+
+          tabsData.form.rerenderForm();
         });
       };
 

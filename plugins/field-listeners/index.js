@@ -1,14 +1,15 @@
 import pluginInfo from "../../plugin-manifest.json";
 
-export const handleFormFieldListenersAdd = ({ contentType, formik, name }) => {
+export const handleFormFieldListenersAdd = ({ contentType, form, name }) => {
   if (name && contentType?.id === pluginInfo.id && contentType?.nonCtdSchema) {
     if (name === "languages") {
       return {
         onChange: ({ value }) => {
           if (value.length === 0) {
-            formik.setFieldValue("default_language", "");
+            form.setFieldValue("default_language", "");
+          } else {
+            form.rerenderForm();
           }
-          formik.setFieldValue(name, value);
         },
       };
     } else if (name === "content_types") {
@@ -25,7 +26,7 @@ export const handleFormFieldListenersAdd = ({ contentType, formik, name }) => {
             }
           }
 
-          formik.setFieldValue(
+          form.setFieldValue(
             name,
             sliceIndex ? value.slice(sliceIndex) : value,
           );
