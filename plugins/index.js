@@ -36,7 +36,25 @@ registerFn(pluginInfo, (handler, client, globals) => {
     const style = document.createElement("style");
     style.id = `${pluginInfo.id}-styles`;
     style.textContent = cssString;
+
+    const googleFontsApiLink = document.createElement("link");
+    const googleFontsStaticLink = document.createElement("link");
+    const googleFontsLink = document.createElement("link");
+
+    googleFontsApiLink.href = "https://fonts.googleapis.com";
+    googleFontsApiLink.rel = "preconnect";
+    googleFontsStaticLink.href = "https://fonts.gstatic.com";
+    googleFontsStaticLink.rel = "preconnect";
+    googleFontsStaticLink.crossOrigin = "anonymous";
+
+    googleFontsLink.href =
+      "https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap";
+    googleFontsLink.rel = "stylesheet";
+
     document.head.appendChild(style);
+    document.head.appendChild(googleFontsApiLink);
+    document.head.appendChild(googleFontsStaticLink);
+    document.head.appendChild(googleFontsLink);
   }
 
   const language = globals.getLanguage();

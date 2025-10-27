@@ -25,8 +25,19 @@ const hasDefaultErrors = (form) =>
     return !name.includes("__translations");
   })?.length;
 
+const RTL_SUPPORTED_INPUT_TYPES = [
+  "text",
+  "textarea",
+  "select",
+  "radio",
+  "textMarkdown",
+  "richtext",
+];
+
+const RTL_LANGUAGES = ["ar"];
+
 export const handleCoFormConfig = async (
-  { name, config, form, contentType, initialData, formUniqueKey },
+  { name, config, form, contentType, initialData, formUniqueKey, properties },
   defaultLanguage,
 ) => {
   if (!contentType?.metaDefinition?.propertiesConfig?.__translations) return;
@@ -36,6 +47,14 @@ export const handleCoFormConfig = async (
   formCache[lngKey] = form;
 
   config.key = `${formUniqueKey || "new"}-${formLng[lngKey]}-${name}`;
+
+  if (
+    RTL_SUPPORTED_INPUT_TYPES.includes(properties.inputType) &&
+    RTL_LANGUAGES.includes(formLng[lngKey])
+  ) {
+    config.className =
+      "plugin-multilingual-field-direction-rtl plugin-multilingual-arabic-font";
+  }
 
   const defaultHasErrors = hasDefaultErrors(form);
   toggleErrorOnTab(defaultLanguage, defaultHasErrors);
