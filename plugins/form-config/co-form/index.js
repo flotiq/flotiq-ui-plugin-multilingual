@@ -32,6 +32,7 @@ const RTL_SUPPORTED_INPUT_TYPES = [
   "radio",
   "textMarkdown",
   "richtext",
+  "block",
 ];
 
 const RTL_LANGUAGES = ["ar"];
@@ -52,6 +53,10 @@ export const handleCoFormConfig = async (
     RTL_SUPPORTED_INPUT_TYPES.includes(properties.inputType) &&
     RTL_LANGUAGES.includes(formLng[lngKey])
   ) {
+    if (properties.inputType === "block") {
+      config.direction = "rtl";
+    }
+
     config.className =
       "plugin-multilingual-field-direction-rtl plugin-multilingual-arabic-font";
   }
