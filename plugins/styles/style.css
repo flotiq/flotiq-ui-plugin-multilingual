@@ -68,3 +68,35 @@
 .plugin-multilingual-remove-ctd-warning__content {
   white-space: pre-line;
 }
+
+/**
+ * RTL
+ */
+.plugin-multilingual-field-direction-rtl {
+  direction: rtl;
+}
+
+.plugin-multilingual-field-direction-rtl > label {
+  direction: ltr;
+}
+
+.plugin-multilingual-field-direction-rtl li[id^="headlessui-combobox-option"]{
+  padding-right: 1rem;
+}
+
+.plugin-multilingual-arabic-font {
+  font-family: "Rubik", sans-serif;
+  font-style: normal;
+}
+
+.plugin-multilingual-field-direction-rtl div[id^="headlessui-combobox-button"] svg[class~="hover:opacity-30"],
+.plugin-multilingual-field-direction-rtl input[type="radio"] ~ div,
+.plugin-multilingual-field-direction-rtl input[type="radio"] ~ label div{
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+.plugin-multilingual-field-direction-rtl input[type="radio"] ~ button{
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
