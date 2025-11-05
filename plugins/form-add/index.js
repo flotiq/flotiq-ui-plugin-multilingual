@@ -1,24 +1,21 @@
-import { allLngValue, lngDictionary } from "..";
-import {
-  addToTranslations,
-  formLng,
-  getLanguageKey,
-} from "../../common/translations";
+import { formLng, getLanguageKey } from "../../common/translations";
 import {
   addElementToCache,
   getCachedElement,
   updateDataInCache,
 } from "../../common/plugin-element-cache";
-import i18n from "../../i18n";
 import pluginInfo from "../../plugin-manifest.json";
-
-const selectedClass = "plugin-multilingual-tab__item--selected";
+import { createWarningElement } from "./elements/warning";
+import { allLngValue } from "../languages";
+import { createTabsElement } from "./elements/tabs";
+import { createDeepLButton } from "./elements/deepl";
 
 const lastLng = {};
 
 export const handleFormFieldAdd = (
   { contentType, form, initialData, formUniqueKey },
   getPluginSettings,
+  toast,
 ) => {
   if (
     contentType?.nonCtdSchema ||
@@ -38,97 +35,50 @@ export const handleFormFieldAdd = (
   if (!isMultilingual) return;
 
   if (!contentType.metaDefinition?.propertiesConfig?.__translations) {
-    const warningCacheKey = `${pluginInfo.id}-${contentType.name}-no-translations-warning`;
-    let warning = getCachedElement(warningCacheKey)?.element;
-
-    if (!warning) {
-      warning = document.createElement("div");
-      warning.className = "plugin-multilingual-translations-warning";
-
-      addElementToCache(warning, warningCacheKey);
-    }
-
-    warning.textContent = i18n.t("NoTranslations");
-
-    return warning;
+    return createWarningElement(contentType);
   }
 
   const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
 
   const dropdownCacheKey = `${pluginInfo.id}-${contentType.name}-${formUniqueKey}-language-tabs`;
-  let tabsContainer = getCachedElement(dropdownCacheKey)?.element;
-  let tabsData = getCachedElement(dropdownCacheKey)?.data || {};
+  let multilingualContainer = getCachedElement(dropdownCacheKey)?.element;
+  let multlingualData = getCachedElement(dropdownCacheKey)?.data || {};
 
-  tabsData.form = form;
+  multlingualData.form = form;
 
-  if (!tabsContainer) {
-    tabsContainer = document.createElement("div");
-    tabsContainer.className = "plugin-multilingual-tabs";
+  if (!multilingualContainer) {
+    multilingualContainer = document.createElement("div");
+    multilingualContainer.classList.add("plugin-multilingual-container");
 
-    const defaultLng = parsedSettings.default_language;
-    formLng[lngKey] = lastLng[contentType.name] || defaultLng;
+    const tabsContainer = createTabsElement(
+      contentType,
+      initialData,
+      multlingualData,
+      formUniqueKey,
+      parsedSettings,
+    );
 
-    for (const lng of parsedSettings.languages) {
-      const lngItemButton = document.createElement("button");
-      lngItemButton.className = "plugin-multilingual-tab__item";
-      lngItemButton.setAttribute("data-language", lng);
-      lngItemButton.innerText = lngDictionary.current[lng];
-      lngItemButton.type = "button";
+    multilingualContainer.appendChild(tabsContainer);
 
-      if (lng === defaultLng) {
-        lngItemButton.classList.toggle(
-          "plugin-multilingual-tab__item--default-item",
-        );
-      }
+    const deeplConfigForContentType = parsedSettings?.deepl_config?.find(
+      ({ content_type }) => content_type === contentType.name,
+    );
 
-      if (lng === formLng[lngKey]) {
-        lngItemButton.classList.toggle(selectedClass);
-      }
-
-      lngItemButton.onclick = (event) => {
-        formLng[lngKey] = lng;
-
-        const slectedTab = tabsContainer.querySelector(`.${selectedClass}`);
-        if (slectedTab) slectedTab.classList.toggle(selectedClass);
-
-        event.target.classList.toggle(selectedClass);
-
-        setTimeout(() => {
-          if (formLng[lngKey] !== defaultLng) {
-            const indexInTranlsations = (
-              tabsData.form.getValues().__translations || []
-            ).findIndex(({ __language }) => __language === formLng[lngKey]);
-
-            if (indexInTranlsations < 0) {
-              addToTranslations(
-                contentType,
-                tabsData.form,
-                formLng[lngKey],
-                initialData,
-              );
-            }
-          }
-
-          const touchedFields = Object.keys(
-            tabsData.form.getErrors() || {},
-          ).reduce(
-            (acc, key) => {
-              acc[key] = true;
-              return acc;
-            },
-            { __translations: true },
-          );
-
-          tabsData.form.setTouched(touchedFields);
-
-          tabsData.form.rerenderForm();
-        });
+    if (parsedSettings.deepl_api_key && deeplConfigForContentType) {
+      const deeplData = {
+        contentType,
+        initialData,
+        settings: deeplConfigForContentType,
+        languages: parsedSettings.languages,
+        form,
+        toast,
       };
 
-      tabsContainer.appendChild(lngItemButton);
+      const deeplButton = createDeepLButton(deeplData, toast);
+      multilingualContainer.appendChild(deeplButton);
     }
 
-    addElementToCache(tabsContainer, dropdownCacheKey, tabsData, () => {
+    addElementToCache(tabsContainer, dropdownCacheKey, multlingualData, () => {
       if (
         !initialData &&
         window.location.pathname.includes(`/edit/${contentType.name}/`)
@@ -140,7 +90,7 @@ export const handleFormFieldAdd = (
     });
   }
 
-  updateDataInCache(dropdownCacheKey, tabsData);
+  updateDataInCache(dropdownCacheKey, multilingualContainer);
 
-  return tabsContainer;
+  return multilingualContainer;
 };

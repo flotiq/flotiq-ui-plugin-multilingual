@@ -1,4 +1,4 @@
-import { allLngValue } from "../plugins";
+import { allLngValue } from "../plugins/languages";
 import { showWarningModal } from "./warning-modal";
 
 export const getUpdateData = (

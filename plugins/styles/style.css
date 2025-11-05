@@ -80,7 +80,7 @@
   direction: ltr;
 }
 
-.plugin-multilingual-field-direction-rtl li[id^="headlessui-combobox-option"]{
+.plugin-multilingual-field-direction-rtl li[id^="headlessui-combobox-option"] {
   padding-right: 1rem;
 }
 
@@ -89,14 +89,68 @@
   font-style: normal;
 }
 
-.plugin-multilingual-field-direction-rtl div[id^="headlessui-combobox-button"] svg[class~="hover:opacity-30"],
+.plugin-multilingual-field-direction-rtl
+  div[id^="headlessui-combobox-button"]
+  svg[class~="hover:opacity-30"],
 .plugin-multilingual-field-direction-rtl input[type="radio"] ~ div,
-.plugin-multilingual-field-direction-rtl input[type="radio"] ~ label div{
+.plugin-multilingual-field-direction-rtl input[type="radio"] ~ label div {
   margin-left: 0.5rem;
   margin-right: 0;
 }
 
-.plugin-multilingual-field-direction-rtl input[type="radio"] ~ button{
+.plugin-multilingual-field-direction-rtl input[type="radio"] ~ button {
   margin-left: 0;
   margin-right: 0.5rem;
+}
+
+.plugin-multilingual-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.plugin-multilingual__deepl-button {
+  box-sizing: border-box;
+  display: flex;
+  cursor: pointer;
+  color: #0083fc;
+  font-weight: 500;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition-property: color, background-color, filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  text-decoration: none;
+  line-height: 1;
+  border: 2px solid #0083fc;
+  border-radius: 8px;
+  padding: 0 12px;
+  width: fit-content;
+}
+
+.plugin-multilingual__deepl-button svg {
+  width: 14px;
+  height: auto;
+}
+
+.plugin-multilingual__deepl-button:hover:not([disabled]) {
+  color: white;
+  background-color: #0083fc;
+  text-decoration: none;
+}
+
+.plugin-multilingual__deepl-button[disabled] {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.mode-dark .plugin-multilingual__deepl-button {
+  color: white;
+}
+
+.mode-dark .plugin-multilingual__deepl-button svg,
+.plugin-multilingual__deepl-button:hover:not([disabled]) svg {
+  filter: contrast(0) brightness(100);
 }

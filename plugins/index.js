@@ -15,18 +15,15 @@ import plLocaleLng from "@cospired/i18n-iso-languages/langs/pl.json";
 import {
   formCache,
   getLanguageKey,
-  updateTranlsations,
+  updateTranslations,
 } from "../common/translations";
+import { lngDictionary } from "./languages";
 
 enLocaleLng.languages.cnr = "Montenegrin";
 plLocaleLng.languages.cnr = "czarnogórski";
 
 languages.registerLocale(enLocaleLng);
 languages.registerLocale(plLocaleLng);
-
-export const lngDictionary = { current: {} };
-
-export const allLngValue = "--all--";
 
 registerFn(pluginInfo, (handler, client, globals) => {
   /**
@@ -78,7 +75,7 @@ registerFn(pluginInfo, (handler, client, globals) => {
   );
 
   handler.on("flotiq.form::add", (data) =>
-    handleFormFieldAdd(data, globals.getPluginSettings),
+    handleFormFieldAdd(data, globals.getPluginSettings, globals.toast),
   );
 
   handler.on("flotiq.form.field.listeners::add", (data) =>
@@ -97,7 +94,7 @@ registerFn(pluginInfo, (handler, client, globals) => {
     "flotiq-multilingual.translation::update",
     ({ contentType, initialData, formUniqueKey, language, values }) => {
       const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
-      updateTranlsations(
+      updateTranslations(
         language,
         values,
         contentType,

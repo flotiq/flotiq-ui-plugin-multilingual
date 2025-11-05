@@ -32,6 +32,19 @@ export const handleFormFieldListenersAdd = ({ contentType, form, name }) => {
           );
         },
       };
+    } else if (name.startsWith("deepl_config")) {
+      const { index, type } =
+        name.match(/deepl_config\[(?<index>\d+)\].(?<type>\w+)/)?.groups || {};
+
+      if (index == null || !type) return;
+
+      if (type === "content_type") {
+        return {
+          onChange: () => {
+            form.setFieldValue(`deepl_config[${index}].fields`, []);
+          },
+        };
+      }
     }
   }
 };
