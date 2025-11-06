@@ -53,10 +53,11 @@ const getTranslations = async (apiKey, fieldValues, targetLang) => {
 
 export const generateTranslation = async (
   { settings, form, languages, contentType, initialData },
+  deepLConfig,
   toast,
 ) => {
   const fieldValues = {};
-  for (const field of settings.fields) {
+  for (const field of deepLConfig.fields) {
     fieldValues[field] = form.getValue(field);
   }
 
@@ -71,7 +72,7 @@ export const generateTranslation = async (
 
   for (const language of languagesToTranslate) {
     const values = await getTranslations(
-      settings.api_key,
+      settings.deepl_api_key,
       fieldValues,
       language,
     );

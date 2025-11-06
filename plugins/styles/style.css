@@ -1,8 +1,68 @@
+.plugin-multilingual-tabs-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  position: relative;
+  min-width: 0;
+}
+
+.plugin-multilingual-tabs-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.plugin-multilingual-tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
 .plugin-multilingual-tabs {
   font-weight: 600;
   text-transform: uppercase;
-  border-bottom: 1px solid #e5e7eb;
   display: flex;
+  width: max-content;
+  min-width: 100%;
+}
+
+.plugin-multilingual-tabs-arrow {
+  flex-shrink: 0;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  transition: all 0.2s ease;
+}
+
+.plugin-multilingual-tabs-arrow:disabled {
+  cursor: not-allowed;
+}
+
+.plugin-multilingual-tabs-arrow svg {
+  width: 10px;
+  height: 17px;
+  transition: filter 0.2s ease;
+}
+
+.plugin-multilingual-tabs-arrow--left svg {
+  transform: rotate(180deg);
+}
+
+.plugin-multilingual-tabs-arrow:hover:not(:disabled) svg {
+  filter: brightness(0.6);
+}
+
+.plugin-multilingual-tabs-arrow:disabled svg {
+  filter: brightness(0) saturate(100%) invert(67%) sepia(9%) saturate(1015%)
+    hue-rotate(170deg) brightness(93%) contrast(87%);
 }
 
 .mode-dark .plugin-multilingual-tabs {
@@ -12,6 +72,12 @@
 
 .plugin-multilingual-tab__item {
   padding: 16px 28px;
+}
+
+@media (max-width: 640px) {
+  .plugin-multilingual-tab__item {
+    padding: 10px;
+  }
 }
 
 .plugin-multilingual-tab__item:not(:last-child) {
@@ -107,6 +173,8 @@
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .plugin-multilingual__deepl-button {

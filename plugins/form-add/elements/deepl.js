@@ -3,7 +3,7 @@ import { generateTranslation } from "./generate-translation";
 
 import deeplIcon from "inline:../../../images/deepl_icon.svg";
 
-export const createDeepLButton = (data, toast) => {
+export const createDeepLButton = (data, deepLConfig, toast) => {
   const deeplButton = document.createElement("button");
   deeplButton.className = "plugin-multilingual__deepl-button";
   deeplButton.type = "button";
@@ -11,7 +11,7 @@ export const createDeepLButton = (data, toast) => {
 
   deeplButton.onclick = () => {
     deeplButton.disabled = true;
-    generateTranslation(data, toast)
+    generateTranslation(data, deepLConfig, toast)
       .catch((error) => {
         console.error("Error translating content:", error);
         toast.error(i18n.t("TranslationError"), { duration: 5000 });

@@ -7,7 +7,7 @@ import {
 import pluginInfo from "../../plugin-manifest.json";
 import { createWarningElement } from "./elements/warning";
 import { allLngValue } from "../languages";
-import { createTabsElement } from "./elements/tabs";
+import { createTabsWrapper } from "./elements/tabs-wrapper";
 import { createDeepLButton } from "./elements/deepl";
 
 const lastLng = {};
@@ -40,9 +40,16 @@ export const handleFormFieldAdd = (
 
   const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
 
-  const dropdownCacheKey = `${pluginInfo.id}-${contentType.name}-${formUniqueKey}-language-tabs`;
-  let multilingualContainer = getCachedElement(dropdownCacheKey)?.element;
-  let multlingualData = getCachedElement(dropdownCacheKey)?.data || {};
+  const cacheKey = `${pluginInfo.id}-${contentType.name}-${formUniqueKey}-language-tabs`;
+  let multilingualContainer = getCachedElement(cacheKey)?.element;
+  let multlingualData = getCachedElement(cacheKey)?.data || {
+    contentType,
+    initialData,
+    formUniqueKey,
+    form,
+    toast,
+    settings: parsedSettings,
+  };
 
   multlingualData.form = form;
 
@@ -50,13 +57,7 @@ export const handleFormFieldAdd = (
     multilingualContainer = document.createElement("div");
     multilingualContainer.classList.add("plugin-multilingual-container");
 
-    const tabsContainer = createTabsElement(
-      contentType,
-      initialData,
-      multlingualData,
-      formUniqueKey,
-      parsedSettings,
-    );
+    const tabsContainer = createTabsWrapper(multlingualData);
 
     multilingualContainer.appendChild(tabsContainer);
 
@@ -65,20 +66,15 @@ export const handleFormFieldAdd = (
     );
 
     if (parsedSettings.deepl_api_key && deeplConfigForContentType) {
-      const deeplData = {
-        contentType,
-        initialData,
-        settings: deeplConfigForContentType,
-        languages: parsedSettings.languages,
-        form,
+      const deeplButton = createDeepLButton(
+        multlingualData,
+        deeplConfigForContentType,
         toast,
-      };
-
-      const deeplButton = createDeepLButton(deeplData, toast);
+      );
       multilingualContainer.appendChild(deeplButton);
     }
 
-    addElementToCache(tabsContainer, dropdownCacheKey, multlingualData, () => {
+    addElementToCache(multilingualContainer, cacheKey, multlingualData, () => {
       if (
         !initialData &&
         window.location.pathname.includes(`/edit/${contentType.name}/`)
@@ -90,7 +86,7 @@ export const handleFormFieldAdd = (
     });
   }
 
-  updateDataInCache(dropdownCacheKey, multilingualContainer);
+  updateDataInCache(cacheKey, multilingualContainer);
 
   return multilingualContainer;
 };
