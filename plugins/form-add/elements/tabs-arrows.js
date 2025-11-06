@@ -19,23 +19,11 @@ export const createTabsArrowsElement = (tabsContainer, tabsInner) => {
     rightArrow.disabled = scrollLeft >= scrollWidth - clientWidth;
   };
 
-  const findFirstVisibleTab = (scrollPosition) => {
-    const tabs = Array.from(tabsInner.children);
-
-    for (const tab of tabs) {
-      const tabLeft = tab.offsetLeft;
-      if (tabLeft >= scrollPosition) {
-        return tab;
-      }
-      if (tabLeft + tab.offsetWidth > scrollPosition) {
-        return tab;
-      }
-    }
-    return tabs[tabs.length - 1];
-  };
-
   const scrollTabs = (direction) => {
-    const scrollAmount = tabsContainer.clientWidth / 2;
+    const scrollAmount =
+      window.innerWidth < 500
+        ? tabsContainer.clientWidth
+        : tabsContainer.clientWidth * (3 / 4);
     const currentScroll = tabsContainer.scrollLeft;
 
     if (direction === "left") {
@@ -44,19 +32,14 @@ export const createTabsArrowsElement = (tabsContainer, tabsInner) => {
       if (targetScroll < 50) {
         tabsContainer.scrollTo({ left: 0, behavior: "smooth" });
       } else {
-        const targetTab = findFirstVisibleTab(targetScroll);
-
         tabsContainer.scrollTo({
-          left: targetTab.offsetLeft - leftArrow.clientWidth,
+          left: targetScroll - leftArrow.clientWidth,
           behavior: "smooth",
         });
       }
     } else {
-      const targetScroll = currentScroll + scrollAmount;
-      const targetTab = findFirstVisibleTab(targetScroll);
-
       tabsContainer.scrollTo({
-        left: targetTab.offsetLeft - leftArrow.clientWidth,
+        left: currentScroll + scrollAmount - leftArrow.clientWidth,
         behavior: "smooth",
       });
     }
