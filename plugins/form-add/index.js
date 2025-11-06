@@ -84,6 +84,20 @@ export const handleFormFieldAdd = (
         delete lastLng[contentType.name];
       }
     });
+
+    multilingualContainer.addEventListener("flotiq.attached", () => {
+      const parentElement = multilingualContainer.parentElement;
+      if (parentElement) {
+        parentElement.style.position = "sticky";
+        parentElement.style.top = "55px";
+        parentElement.style.zIndex = "10";
+        parentElement.style.background = "white";
+      }
+      const form = parentElement.parentElement;
+      if (form) {
+        form.style.position = "relative";
+      }
+    });
   }
 
   updateDataInCache(cacheKey, multilingualContainer);

@@ -26,6 +26,8 @@ i18n.init({
         DeeplApiKey: "DeepL API Key",
         DeeplConfig: "DeepL Configuration",
         FieldRequired: "Field is required",
+        LanguagesNotSupported:
+          "The following languages are not supported: {{languages}}",
         Languages: "Available languages",
         MinLanguages: "You have to add at least 2 langugages",
         NoTranslations:
@@ -37,6 +39,8 @@ i18n.init({
         SettingsUpdateError:
           "Cannot update plugin settings. Please try again later.",
         Translate: "Translate",
+        TranslateError: `Translation failed for {{language}} language. Error: {{error}}`,
+        Translated: "Content translated for {{languages}} languages.",
         UpdateError:
           "Error occurred while connecting to the server, please try again later.",
         Warning: "Warning!",
@@ -67,6 +71,8 @@ i18n.init({
         DeeplConfig: "Konfiguracja DeepL",
         FieldRequired: "Pole jest wymagane",
         Languages: "Dostępne języki",
+        LanguagesNotSupported:
+          "Następujące języki nie są obsługiwane: {{languages}}",
         MinLanguages: "Musisz dodać co najmniej dwa języki",
         NoTranslations:
           "Nie udało się znaleźć pola z tłumaczeniami. " +
@@ -77,6 +83,9 @@ i18n.init({
         SettingsUpdateError:
           "Coś poszło nie tak podczas aktualizacji ustawień plugin. Spróbuj ponownie później",
         Translate: "Tłumacz",
+        TranslateError:
+          "Tłumaczenie nie powiodło się dla języka {{language}}. Błąd: {{error}}",
+        Translated: "Zawartość przetłumaczona na języki {{languages}}.",
         UpdateError:
           "Wystąpił błąd połączenia z serwerem, spróbuj ponownie później.",
         Warning: "Uwaga!",

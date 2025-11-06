@@ -11,14 +11,9 @@ export const createDeepLButton = (data, deepLConfig, toast) => {
 
   deeplButton.onclick = () => {
     deeplButton.disabled = true;
-    generateTranslation(data, deepLConfig, toast)
-      .catch((error) => {
-        console.error("Error translating content:", error);
-        toast.error(i18n.t("TranslationError"), { duration: 5000 });
-      })
-      .finally(() => {
-        deeplButton.disabled = false;
-      });
+    generateTranslation(data, deepLConfig, toast).then(() => {
+      deeplButton.disabled = false;
+    });
   };
   return deeplButton;
 };

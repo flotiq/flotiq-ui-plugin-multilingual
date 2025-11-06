@@ -20,6 +20,7 @@ const getTranslations = async (apiKey, fieldValues, targetLang) => {
       method: "POST",
       headers: {
         Authorization: `DeepL-Auth-Key ${apiKey}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         text: values,
@@ -41,7 +42,7 @@ const getTranslations = async (apiKey, fieldValues, targetLang) => {
     }, {});
   } catch (error) {
     console.error("Error translating content:", error);
-    throw new Error("Translation failed");
+    throw new Error(error);
   }
 };
 
@@ -52,7 +53,7 @@ const getTranslations = async (apiKey, fieldValues, targetLang) => {
  */
 
 export const generateTranslation = async (
-  { settings, form, languages, contentType, initialData },
+  { settings, form, contentType, initialData },
   deepLConfig,
   toast,
 ) => {
@@ -66,18 +67,54 @@ export const generateTranslation = async (
    * get the translation of each language
    * and send event to multilingual to update translations
    */
-  const languagesToTranslate = languages.filter(
+  const languagesToTranslate = settings.languages.filter(
     (lng) => lng !== settings.default_language,
   );
 
-  for (const language of languagesToTranslate) {
-    const values = await getTranslations(
-      settings.deepl_api_key,
-      fieldValues,
-      language,
-    );
+  const errors = [];
+  const notSupportedLanguages = [];
+  const translatedLanguages = [];
 
-    updateTranslations(language, values, contentType, form, initialData);
+  for (const language of languagesToTranslate) {
+    let values;
+    try {
+      values = await getTranslations(
+        settings.deepl_api_key,
+        fieldValues,
+        language,
+      );
+      translatedLanguages.push(language);
+    } catch (error) {
+      if (error.message?.includes("not supported")) {
+        notSupportedLanguages.push(language);
+      } else {
+        errors.push(
+          i18n.t("TranslateError", { language, error: error.message }),
+        );
+      }
+    }
+
+    if (values) {
+      updateTranslations(language, values, contentType, form, initialData);
+    }
   }
-  toast.success(i18n.t("Success"), { duration: 5000 });
+
+  if (notSupportedLanguages.length > 0) {
+    toast.error(
+      i18n.t("LanguagesNotSupported", {
+        languages: notSupportedLanguages.join(", "),
+      }),
+      { duration: 10000 },
+    );
+  }
+
+  if (errors.length > 0) {
+    toast.error(errors.join("\n"), { duration: 10000 });
+    return;
+  }
+
+  toast.success(
+    i18n.t("Translated", { languages: translatedLanguages.join(", ") }),
+    { duration: 5000 },
+  );
 };
