@@ -28,7 +28,6 @@ export const createTabsWrapper = (tabsData) => {
     wrapper.appendChild(rightArrow);
 
     wrapper.addEventListener("flotiq.attached", () => {
-      console.log("attached event received");
       updateArrows();
     });
 

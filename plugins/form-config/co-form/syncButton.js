@@ -13,9 +13,14 @@ export const createSyncButton = (
   contentTypeName,
   formUniqueKey,
 ) => {
-  const cacheKey = `${pluginInfo.id}-${contentTypeName}-${formUniqueKey}-sync-field`;
-  let syncButton = getCachedElement(cacheKey)?.element;
-  let syncButtonData = getCachedElement(cacheKey)?.data || {};
+  const cachePrefix = `${pluginInfo.id}-${contentTypeName}-${formUniqueKey}-${name}`;
+
+  const wrapperCacheKey = `${cachePrefix}-sync-ghost-wrapper`;
+  let ghostWrapper = getCachedElement(wrapperCacheKey)?.element;
+
+  const syncButtonCacheKey = `${cachePrefix}-sync-field`;
+  let syncButton = getCachedElement(syncButtonCacheKey)?.element;
+  let syncButtonData = getCachedElement(syncButtonCacheKey)?.data || {};
 
   syncButtonData.form = form;
   syncButtonData.name = name;
@@ -33,8 +38,19 @@ export const createSyncButton = (
       form.setFieldValue(syncButtonData.name, defaultValue);
     };
 
-    addElementToCache(syncButton, cacheKey, syncButtonData);
+    addElementToCache(syncButton, syncButtonCacheKey, syncButtonData);
   }
 
-  return syncButton;
+  if (!ghostWrapper) {
+    ghostWrapper = document.createElement("div");
+    addElementToCache(ghostWrapper, wrapperCacheKey);
+
+    ghostWrapper.addEventListener("flotiq.attached", () => {
+      const field = ghostWrapper.parentElement.previousElementSibling;
+      const labelElement = field.querySelector("label");
+      field.insertBefore(syncButton, labelElement.nextSibling);
+    });
+  }
+
+  return ghostWrapper;
 };

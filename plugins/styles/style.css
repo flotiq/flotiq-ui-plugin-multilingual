@@ -7,6 +7,12 @@
   min-width: 0;
 }
 
+@media (max-width: 639px) {
+  .plugin-multilingual-tabs-wrapper {
+    gap: 0;
+  }
+}
+
 .plugin-multilingual-tabs-container {
   overflow-x: auto;
   overflow-y: hidden;
@@ -178,6 +184,12 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+@media (max-width: 639px) {
+  .plugin-multilingual-container {
+    gap: 10px;
+  }
+}
+
 .plugin-multilingual__deepl-button {
   box-sizing: border-box;
   display: flex;
@@ -197,6 +209,12 @@
   border-radius: 8px;
   padding: 0 12px;
   width: fit-content;
+}
+
+@media (max-width: 639px) {
+  .plugin-multilingual__deepl-button {
+    padding: 0 7px;
+  }
 }
 
 .plugin-multilingual__deepl-button svg {
@@ -224,12 +242,19 @@
   filter: contrast(0) brightness(100);
 }
 
+@media (max-width: 639px) {
+  .plugin-multilingual__deepl-button-text {
+    display: none;
+  }
+}
+
 .plugin-multilingual-sync-button {
   display: flex;
   align-items: center;
   gap: 5px;
   color: #0083fc;
   font-weight: 500;
+  padding: 6px 0;
 }
 
 .plugin-multilingual-sync-button:hover {

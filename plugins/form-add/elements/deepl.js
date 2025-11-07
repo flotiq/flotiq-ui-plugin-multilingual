@@ -7,7 +7,9 @@ export const createDeepLButton = (data, deepLConfig, toast) => {
   const deeplButton = document.createElement("button");
   deeplButton.className = "plugin-multilingual__deepl-button";
   deeplButton.type = "button";
-  deeplButton.innerHTML = `${deeplIcon} ${i18n.t("Translate")}`;
+  deeplButton.innerHTML =
+    deeplIcon +
+    `<span class="plugin-multilingual__deepl-button-text">${i18n.t("Translate")}</span>`;
 
   deeplButton.onclick = () => {
     deeplButton.disabled = true;
