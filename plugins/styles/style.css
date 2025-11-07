@@ -220,3 +220,16 @@
 .plugin-multilingual__deepl-button:hover:not([disabled]) svg {
   filter: contrast(0) brightness(100);
 }
+
+.plugin-multilingual-sync-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #0083fc;
+  font-weight: 500;
+}
+
+.plugin-multilingual-sync-button:hover {
+  text-decoration: underline;
+  filter: brightness(0.8);
+}

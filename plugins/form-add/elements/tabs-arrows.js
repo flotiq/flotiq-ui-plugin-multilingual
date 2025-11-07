@@ -1,6 +1,6 @@
 import arrowIcon from "inline:../../../images/arrow_icon.svg";
 
-export const createTabsArrowsElement = (tabsContainer, tabsInner) => {
+export const createTabsArrowsElement = (tabsContainer) => {
   const leftArrow = document.createElement("button");
   leftArrow.className =
     "plugin-multilingual-tabs-arrow plugin-multilingual-tabs-arrow--left";

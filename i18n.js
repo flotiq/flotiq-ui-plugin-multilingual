@@ -38,6 +38,7 @@ i18n.init({
           "Please go to the edit content type definition page and delete it manually.",
         SettingsUpdateError:
           "Cannot update plugin settings. Please try again later.",
+        SyncValues: "Sync values",
         Translate: "Translate",
         TranslateError: `Translation failed for {{language}} language. Error: {{error}}`,
         Translated: "Content translated for {{languages}} languages.",
@@ -82,6 +83,7 @@ i18n.init({
           "Proszę, przejdź do strony edycji definicji typu zawartości i usuń je ręcznie.",
         SettingsUpdateError:
           "Coś poszło nie tak podczas aktualizacji ustawień plugin. Spróbuj ponownie później",
+        SyncValues: "Synchronizuj wartości",
         Translate: "Tłumacz",
         TranslateError:
           "Tłumaczenie nie powiodło się dla języka {{language}}. Błąd: {{error}}",

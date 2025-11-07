@@ -3,6 +3,7 @@ import {
   formLng,
   getLanguageKey,
 } from "../../../common/translations";
+import { createSyncButton } from "./syncButton";
 
 const errorClass = "plugin-multilingual-tab__item--error";
 
@@ -103,5 +104,16 @@ export const handleCoFormConfig = async (
 
     const error = form.getError("__translations")?.[lngIndex]?.[name];
     config.error = error;
+  }
+
+  if (properties.inputType === "datasource") {
+    const syncButton = createSyncButton(
+      form,
+      fieldName,
+      name,
+      contentType.name,
+      formUniqueKey,
+    );
+    config.additionalElements = [syncButton];
   }
 };

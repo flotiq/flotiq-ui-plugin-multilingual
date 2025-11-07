@@ -1,17 +1,12 @@
-import {
-  addToTranslations,
-  formLng,
-  getLanguageKey,
-} from "../../../common/translations";
+import { addToTranslations, formLng } from "../../../common/translations";
 import { lngDictionary } from "../../languages";
 
 const selectedClass = "plugin-multilingual-tab__item--selected";
 
 const lastLng = {};
 
-export const createTabs = (tabsData) => {
-  const { settings, contentType, initialData, formUniqueKey } = tabsData;
-  const lngKey = getLanguageKey(contentType, initialData, formUniqueKey);
+export const createTabs = (tabsData, lngKey) => {
+  const { settings, contentType, initialData } = tabsData;
 
   const tabsContainer = document.createElement("div");
   tabsContainer.className = "plugin-multilingual-tabs-container";
@@ -21,8 +16,6 @@ export const createTabs = (tabsData) => {
 
   const defaultLng = settings.default_language;
   formLng[lngKey] = lastLng[contentType.name] || defaultLng;
-
-  console.log("settings.languages", settings.languages);
 
   for (const lng of settings.languages) {
     const lngItemButton = document.createElement("button");

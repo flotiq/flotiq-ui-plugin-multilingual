@@ -7,7 +7,7 @@ import {
 import pluginInfo from "../../plugin-manifest.json";
 import { createWarningElement } from "./elements/warning";
 import { allLngValue } from "../languages";
-import { createTabsWrapper } from "./elements/tabs-wrapper";
+import { createMultilingualWrapper } from "./elements/multilingual-wrapper";
 import { createDeepLButton } from "./elements/deepl";
 
 const lastLng = {};
@@ -57,7 +57,7 @@ export const handleFormFieldAdd = (
     multilingualContainer = document.createElement("div");
     multilingualContainer.classList.add("plugin-multilingual-container");
 
-    const tabsContainer = createTabsWrapper(multlingualData);
+    const tabsContainer = createMultilingualWrapper(multlingualData);
 
     multilingualContainer.appendChild(tabsContainer);
 
