@@ -87,12 +87,8 @@ export const handleFormFieldAdd = (
 
     multilingualContainer.addEventListener("flotiq.attached", () => {
       const parentElement = multilingualContainer.parentElement;
-      if (parentElement) {
-        parentElement.style.position = "sticky";
-        parentElement.style.top = "55px";
-        parentElement.style.zIndex = "10";
-        parentElement.style.background = "white";
-      }
+      parentElement.className = "plugin-multilingual-sticky-wrapper";
+
       const form = parentElement.parentElement;
       if (form) {
         form.style.position = "relative";

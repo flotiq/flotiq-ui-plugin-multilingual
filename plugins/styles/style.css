@@ -257,7 +257,23 @@
   padding: 6px 0;
 }
 
+.mode-dark .plugin-multilingual-sync-button {
+  color: white;
+}
+
 .plugin-multilingual-sync-button:hover {
   text-decoration: underline;
   filter: brightness(0.8);
+}
+
+.plugin-multilingual-sticky-wrapper {
+  position: sticky;
+  top: 55px;
+  background-color: inherit;
+  z-index: 10;
+  background-color: white;
+}
+
+.mode-dark .plugin-multilingual-sticky-wrapper {
+  background-color: #020617;
 }
