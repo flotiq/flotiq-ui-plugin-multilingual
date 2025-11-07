@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.9.0]
 ### Added
 * DeepL configuration #27326
+* sync button with default for relation field #27326
+
+### Changed
+* improve ui/ux #27326
 
 ## [0.8.5]
 ### Added
