@@ -15,8 +15,17 @@ export const createTabsArrowsElement = (tabsContainer) => {
 
   const updateArrows = () => {
     const { scrollLeft, scrollWidth, clientWidth } = tabsContainer;
-    leftArrow.disabled = scrollLeft <= 0;
-    rightArrow.disabled = scrollLeft >= scrollWidth - clientWidth;
+
+    if (scrollWidth <= clientWidth) {
+      leftArrow.classList.add("plugin-multilingual-tabs-arrow--hidden");
+      rightArrow.classList.add("plugin-multilingual-tabs-arrow--hidden");
+    } else {
+      leftArrow.classList.remove("plugin-multilingual-tabs-arrow--hidden");
+      rightArrow.classList.remove("plugin-multilingual-tabs-arrow--hidden");
+
+      leftArrow.disabled = scrollLeft <= 0;
+      rightArrow.disabled = Math.round(scrollLeft) >= scrollWidth - clientWidth;
+    }
   };
 
   const scrollTabs = (direction) => {
@@ -50,5 +59,5 @@ export const createTabsArrowsElement = (tabsContainer) => {
 
   tabsContainer.addEventListener("scroll", updateArrows);
 
-  return { leftArrow, rightArrow };
+  return { leftArrow, rightArrow, updateArrows };
 };

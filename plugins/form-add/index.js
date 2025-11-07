@@ -7,7 +7,7 @@ import {
 import pluginInfo from "../../plugin-manifest.json";
 import { createWarningElement } from "./elements/warning";
 import { allLngValue } from "../languages";
-import { createMultilingualWrapper } from "./elements/multilingual-wrapper";
+import { createTabsWrapper } from "./elements/tabs-wrapper";
 import { createDeepLButton } from "./elements/deepl";
 
 const lastLng = {};
@@ -57,9 +57,9 @@ export const handleFormFieldAdd = (
     multilingualContainer = document.createElement("div");
     multilingualContainer.classList.add("plugin-multilingual-container");
 
-    const tabsContainer = createMultilingualWrapper(multlingualData);
+    const tabsWrapper = createTabsWrapper(multlingualData);
 
-    multilingualContainer.appendChild(tabsContainer);
+    multilingualContainer.appendChild(tabsWrapper);
 
     const deeplConfigForContentType = parsedSettings?.deepl_config?.find(
       ({ content_type }) => content_type === contentType.name,
@@ -97,6 +97,8 @@ export const handleFormFieldAdd = (
       if (form) {
         form.style.position = "relative";
       }
+
+      tabsWrapper.dispatchEvent(new Event("flotiq.attached"));
     });
   }
 

@@ -11,7 +11,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
@@ -64,6 +63,10 @@
 .plugin-multilingual-tabs-arrow:disabled svg {
   filter: brightness(0) saturate(100%) invert(67%) sepia(9%) saturate(1015%)
     hue-rotate(170deg) brightness(93%) contrast(87%);
+}
+
+.plugin-multilingual-tabs-arrow--hidden {
+  display: none;
 }
 
 .mode-dark .plugin-multilingual-tabs {

@@ -4,7 +4,7 @@ import { createTabsArrowsElement } from "./tabs-arrows";
 import { createTabs } from "./tabs";
 import { getLanguageKey } from "../../../common/translations";
 
-export const createMultilingualWrapper = (tabsData) => {
+export const createTabsWrapper = (tabsData) => {
   const cacheKey = `${pluginInfo.id}-${tabsData.contentType.name}-${tabsData.ormUniqueKey}-language-tabs`;
   let wrapper = getCachedElement(cacheKey)?.element;
 
@@ -19,12 +19,22 @@ export const createMultilingualWrapper = (tabsData) => {
     wrapper.className = "plugin-multilingual-tabs-wrapper";
 
     const { tabsContainer, tabsInner } = createTabs(tabsData, lngKey);
-    const { leftArrow, rightArrow } = createTabsArrowsElement(tabsContainer);
+    const { leftArrow, rightArrow, updateArrows } =
+      createTabsArrowsElement(tabsContainer);
 
     tabsContainer.appendChild(tabsInner);
     wrapper.appendChild(leftArrow);
     wrapper.appendChild(tabsContainer);
     wrapper.appendChild(rightArrow);
+
+    wrapper.addEventListener("flotiq.attached", () => {
+      console.log("attached event received");
+      updateArrows();
+    });
+
+    window.addEventListener("resize", () => {
+      updateArrows();
+    });
   }
 
   return wrapper;
