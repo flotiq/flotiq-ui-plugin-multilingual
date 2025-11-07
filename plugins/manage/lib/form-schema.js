@@ -1,6 +1,6 @@
-import { lngDictionary } from "../..";
 import i18n from "../../../i18n";
 import pluginInfo from "../../../plugin-manifest.json";
+import { lngDictionary } from "../../languages";
 
 export const getSchema = (contentTypes) => {
   const countryOptions = Object.keys(lngDictionary.current).map((key) => ({
@@ -40,6 +40,29 @@ export const getSchema = (contentTypes) => {
               },
               minLength: 1,
             },
+            deepl_api_key: {
+              type: "string",
+            },
+            deepl_config: {
+              type: "array",
+              items: {
+                properties: {
+                  content_type: {
+                    type: "string",
+                    minLength: 1,
+                  },
+                  fields: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                    },
+                    minLength: 1,
+                  },
+                },
+                required: ["content_type", "fields"],
+                type: "object",
+              },
+            },
           },
         },
       ],
@@ -47,7 +70,13 @@ export const getSchema = (contentTypes) => {
       additionalProperties: false,
     },
     metaDefinition: {
-      order: ["content_types", "languages", "default_language"],
+      order: [
+        "content_types",
+        "languages",
+        "default_language",
+        "deepl_api_key",
+        "deepl_config",
+      ],
       propertiesConfig: {
         languages: {
           label: i18n.t("Languages"),
@@ -74,6 +103,40 @@ export const getSchema = (contentTypes) => {
           inputType: "select",
           optionsWithLabels: contentTypes,
           useOptionsWithLabels: true,
+        },
+        deepl_api_key: {
+          label: i18n.t("DeeplApiKey"),
+          unique: false,
+          helpText: "",
+          inputType: "text",
+        },
+        deepl_config: {
+          label: i18n.t("DeeplConfig"),
+          helpText: "",
+          unique: false,
+          inputType: "object",
+          items: {
+            propertiesConfig: {
+              content_type: {
+                label: i18n.t("ContentType"),
+                helpText: "",
+                unique: false,
+                inputType: "select",
+                optionsWithLabels: contentTypes,
+                useOptionsWithLabels: true,
+              },
+              fields: {
+                label: "Fields",
+                helpText: "",
+                unique: false,
+                inputType: "select",
+                options: [],
+                useOptionsWithLabels: true,
+                multiple: true,
+              },
+            },
+            order: ["content_type", "fields"],
+          },
         },
       },
     },

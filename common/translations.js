@@ -41,7 +41,7 @@ export const addToTranslations = (
   });
 };
 
-export const updateTranlsations = (
+export const updateTranslations = (
   language,
   values,
   contentType,

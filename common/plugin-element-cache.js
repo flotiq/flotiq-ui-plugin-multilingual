@@ -10,7 +10,7 @@ export const addElementToCache = (element, key, data = {}, onRemove = null) => {
     data,
   };
 
-  if (element.addEventListener) {
+  if (element?.addEventListener) {
     let detachTimeoutId;
 
     element.addEventListener("flotiq.attached", () => {

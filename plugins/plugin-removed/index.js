@@ -5,7 +5,7 @@ import {
   getUpdateData,
 } from "../../common/content-type-parser";
 import { errorModal } from "../../common/warning-modal";
-import { allLngValue } from "..";
+import { allLngValue } from "../languages";
 
 export const handleRemovedEvent = async (
   client,

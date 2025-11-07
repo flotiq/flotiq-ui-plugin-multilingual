@@ -1,7 +1,7 @@
 import pluginInfo from "../../plugin-manifest.json";
+import { allLngValue } from "../languages";
 import { handleCoFormConfig } from "./co-form";
 import { handlePluginFormConfig } from "./plugin-form";
-import { allLngValue } from "..";
 
 export const handleFormFieldConfig = (data, getPluginSettings) => {
   if (

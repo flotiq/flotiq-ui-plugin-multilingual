@@ -7,7 +7,8 @@ i18n.init({
     en: {
       translation: {
         All: "All",
-        ContentTypes: "Content Type",
+        ContentType: "Content Type",
+        ContentTypes: "Content Types",
         ContentTypeUpdateError:
           "Cannot update {{name}} Content Type Definition. Please, try again later.",
         Default: "Default",
@@ -22,7 +23,11 @@ i18n.init({
           Remove: "Remove translation fields and data",
           Title: "Do you want to remove translation fields?",
         },
+        DeeplApiKey: "DeepL API Key",
+        DeeplConfig: "DeepL Configuration",
         FieldRequired: "Field is required",
+        LanguagesNotSupported:
+          "The following languages are not supported: {{languages}}",
         Languages: "Available languages",
         MinLanguages: "You have to add at least 2 langugages",
         NoTranslations:
@@ -33,15 +38,21 @@ i18n.init({
           "Please go to the edit content type definition page and delete it manually.",
         SettingsUpdateError:
           "Cannot update plugin settings. Please try again later.",
+        SyncValues: "Sync values",
+        Translate: "Translate",
+        TranslateError: `Translation failed for {{language}} language. Error: {{error}}`,
+        Translated: "Content translated for {{languages}} languages.",
         UpdateError:
           "Error occurred while connecting to the server, please try again later.",
         Warning: "Warning!",
+        WrongField: "One or more of the selected fields are invalid",
       },
     },
     pl: {
       translation: {
         All: "Wszystkie",
-        ContentTypes: "Typ zawartości",
+        ContentType: "Typ zawartości",
+        ContentTypes: "Typy zawartości",
         ContentTypeUpdateError:
           "Coś poszło nie tak podczas aktualizacji definicji typu {{name}}. Spróbuj ponownie później.",
         Default: "Domyślny",
@@ -57,8 +68,12 @@ i18n.init({
           Remove: "Usuń pola tłumaczeń i dane",
           Title: "Czy chcesz usunąć pola tłumaczeń?",
         },
+        DeeplApiKey: "Klucz API do DeepL",
+        DeeplConfig: "Konfiguracja DeepL",
         FieldRequired: "Pole jest wymagane",
         Languages: "Dostępne języki",
+        LanguagesNotSupported:
+          "Następujące języki nie są obsługiwane: {{languages}}",
         MinLanguages: "Musisz dodać co najmniej dwa języki",
         NoTranslations:
           "Nie udało się znaleźć pola z tłumaczeniami. " +
@@ -68,9 +83,15 @@ i18n.init({
           "Proszę, przejdź do strony edycji definicji typu zawartości i usuń je ręcznie.",
         SettingsUpdateError:
           "Coś poszło nie tak podczas aktualizacji ustawień plugin. Spróbuj ponownie później",
+        SyncValues: "Synchronizuj wartości",
+        Translate: "Tłumacz",
+        TranslateError:
+          "Tłumaczenie nie powiodło się dla języka {{language}}. Błąd: {{error}}",
+        Translated: "Zawartość przetłumaczona na języki {{languages}}.",
         UpdateError:
           "Wystąpił błąd połączenia z serwerem, spróbuj ponownie później.",
         Warning: "Uwaga!",
+        WrongField: "Jedno lub więcej z wybranych pól jest nieprawidłowe",
       },
     },
   },
