@@ -274,6 +274,10 @@
   background-color: white;
 }
 
+div + main .plugin-multilingual-sticky-wrapper {
+  top: 104px;
+}
+
 .mode-dark .plugin-multilingual-sticky-wrapper {
   background-color: #020617;
 }

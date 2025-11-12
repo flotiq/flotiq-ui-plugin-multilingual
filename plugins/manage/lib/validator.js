@@ -4,7 +4,7 @@ export const getValidator = (fieldKeys) => {
   return (values) => {
     const errors = {};
 
-    ["content_types", "languages", "defaultLanguage"].map((key) => {
+    ["content_types", "languages", "default_language"].map((key) => {
       const value = values[key];
       if (!value || (Array.isArray(value) && !value.length)) {
         errors[key] = i18n.t("FieldRequired");
