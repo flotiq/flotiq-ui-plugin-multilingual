@@ -272,6 +272,11 @@
   background-color: inherit;
   z-index: 10;
   background-color: white;
+  overflow: hidden;
+}
+
+form.cursor-not-allowed .plugin-multilingual-sync-button {
+  display: none;
 }
 
 .mode-dark .plugin-multilingual-sticky-wrapper {

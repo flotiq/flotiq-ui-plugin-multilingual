@@ -1,12 +1,15 @@
 import { addToTranslations, formLng } from "../../../common/translations";
 import { lngDictionary } from "../../languages";
 
-const selectedClass = "plugin-multilingual-tab__item--selected";
+export const selectedClass = "plugin-multilingual-tab__item--selected";
 
 const lastLng = {};
+let mainFormLng = "";
 
 export const createTabs = (tabsData, lngKey) => {
   const { settings, contentType, initialData } = tabsData;
+
+  const isMainForm = !mainFormLng;
 
   const tabsContainer = document.createElement("div");
   tabsContainer.className = "plugin-multilingual-tabs-container";
@@ -15,7 +18,11 @@ export const createTabs = (tabsData, lngKey) => {
   tabsInner.className = "plugin-multilingual-tabs";
 
   const defaultLng = settings.default_language;
-  formLng[lngKey] = lastLng[contentType.name] || defaultLng;
+  formLng[lngKey] = mainFormLng || lastLng[contentType.name] || defaultLng;
+
+  if (isMainForm) {
+    mainFormLng = formLng[lngKey];
+  }
 
   for (const lng of settings.languages) {
     const lngItemButton = document.createElement("button");
@@ -36,6 +43,7 @@ export const createTabs = (tabsData, lngKey) => {
 
     lngItemButton.onclick = (event) => {
       formLng[lngKey] = lng;
+      if (isMainForm) mainFormLng = lng;
 
       const slectedTab = tabsInner.querySelector(`.${selectedClass}`);
       if (slectedTab) slectedTab.classList.toggle(selectedClass);
@@ -76,6 +84,12 @@ export const createTabs = (tabsData, lngKey) => {
 
     tabsInner.appendChild(lngItemButton);
   }
+
+  tabsContainer.addEventListener("flotiq.detached", () => {
+    if (isMainForm) {
+      mainFormLng = "";
+    }
+  });
 
   return { tabsContainer, tabsInner };
 };
