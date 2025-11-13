@@ -272,6 +272,19 @@
   background-color: inherit;
   z-index: 10;
   background-color: white;
+  overflow: hidden;
+}
+
+div + main .plugin-multilingual-sticky-wrapper {
+  top: 104px;
+}
+
+div[aria-modal="true"]
+  div
+  + div
+  > div.items-center
+  .plugin-multilingual-sticky-wrapper {
+  top: 33px;
 }
 
 .mode-dark .plugin-multilingual-sticky-wrapper {
