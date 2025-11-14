@@ -83,6 +83,7 @@ export const handleFormFieldAdd = (
       } else {
         delete lastLng[contentType.name];
       }
+      tabsWrapper.dispatchEvent(new Event("flotiq.detached"));
     });
 
     multilingualContainer.addEventListener("flotiq.attached", () => {

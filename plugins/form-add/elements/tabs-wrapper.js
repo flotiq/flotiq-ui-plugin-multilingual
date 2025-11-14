@@ -1,7 +1,7 @@
 import pluginInfo from "../../../plugin-manifest.json";
 import { getCachedElement } from "../../../common/plugin-element-cache";
 import { createTabsArrowsElement } from "./tabs-arrows";
-import { createTabs } from "./tabs";
+import { createTabs, selectedClass } from "./tabs";
 import { getLanguageKey } from "../../../common/translations";
 
 export const createTabsWrapper = (tabsData) => {
@@ -29,10 +29,26 @@ export const createTabsWrapper = (tabsData) => {
 
     wrapper.addEventListener("flotiq.attached", () => {
       updateArrows();
+
+      const selectedLng = tabsInner.querySelector(`.${selectedClass}`);
+      if (
+        selectedLng &&
+        selectedLng.offsetLeft + selectedLng.clientWidth >
+          tabsContainer.offsetWidth
+      ) {
+        tabsContainer.scrollTo({
+          left: selectedLng.offsetLeft,
+          behavior: "smooth",
+        });
+      }
     });
 
     window.addEventListener("resize", () => {
       updateArrows();
+    });
+
+    wrapper.addEventListener("flotiq.detached", () => {
+      tabsContainer.dispatchEvent(new Event("flotiq.detached"));
     });
   }
 

@@ -275,6 +275,10 @@
   overflow: hidden;
 }
 
+form.cursor-not-allowed .plugin-multilingual-sync-button {
+  display: none;
+}
+
 div + main .plugin-multilingual-sticky-wrapper {
   top: 104px;
 }
