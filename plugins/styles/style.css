@@ -280,7 +280,7 @@ form.cursor-not-allowed .plugin-multilingual-sync-button {
 }
 
 div + main .plugin-multilingual-sticky-wrapper {
-  top: 104px;
+  top: calc(calc(var(--flotiqLayoutOffset)) + 56px);
 }
 
 div[aria-modal="true"]
