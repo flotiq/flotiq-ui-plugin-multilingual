@@ -80,6 +80,7 @@ const addTranslationsToContentType = async (contentType, defaultLanguage) => {
 
   const translationPropertiesConfig = order.reduce((config, key) => {
     config[key] = contentType.metaDefinition.propertiesConfig[key];
+    config[key].unique = false;
     return config;
   }, {});
 
