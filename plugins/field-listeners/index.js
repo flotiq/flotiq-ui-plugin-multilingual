@@ -17,7 +17,6 @@ export const handleFormFieldListenersAdd = ({ contentType, form, name }) => {
         onChange: ({ value }) => {
           let sliceIndex = null;
           const lastIndex = value.length - 1;
-
           if (lastIndex > 0) {
             if (value[0] === "--all--") {
               sliceIndex = 1;
@@ -26,10 +25,12 @@ export const handleFormFieldListenersAdd = ({ contentType, form, name }) => {
             }
           }
 
-          form.setFieldValue(
-            name,
-            sliceIndex ? value.slice(sliceIndex) : value,
-          );
+          if (sliceIndex !== null) {
+            form.setFieldValue(
+              name,
+              sliceIndex ? value.slice(sliceIndex) : value,
+            );
+          }
         },
       };
     } else if (name.startsWith("deepl_config")) {
