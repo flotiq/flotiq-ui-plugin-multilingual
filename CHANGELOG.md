@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [0.10.1]
+### Fixed
+* fix infinite rerendering when changing content type in plugin settings causing "Maximum call stack size exceeded" error #27794
+
 ## [0.10.0]
 ### Changed
 * now translation do not preserve unique settings #27394
