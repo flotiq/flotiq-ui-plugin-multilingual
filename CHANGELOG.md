@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Flotiq logo and collaboration section in readme
 * License
 * GitHub check actions
+* Information about DeepL configuration to readme
 
 ## [0.10.1]
 ### Fixed

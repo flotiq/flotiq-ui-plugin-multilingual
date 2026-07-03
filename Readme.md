@@ -14,6 +14,17 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 2. Add at least two languages and select the default language.
 3. After saving the settings, the Content Types are modified and a `__translations` field is added, containing an array of available translations. The translation language is available under the `__language` field in each `__translations` item.
 
+### DeepL configuration
+
+The plugin can use DeepL to generate translations automatically. To enable it, provide a DeepL API key in the plugin settings and add DeepL configuration for each content type that should support automatic translation.
+
+For every DeepL configuration entry:
+
+- Select the content type.
+- Select the fields that should be sent to DeepL. Only text-based fields are available: `text`, `textarea`, `richtext`, and `textMarkdown`. The `slug` field is excluded.
+
+DeepL configuration is optional. If the API key or configuration for a content type is missing, the object form will still use manual multilingual tabs, but the DeepL translation button will not be displayed.
+
 <img src=".docs/configuration.png" alt="Multilingual plugin configuration" width="700"/>
 
 ## Special Fields
@@ -28,6 +39,9 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 - When adding/editing an object, tabs with the previously selected languages will be available. The default language is always in the first tab.
 - Clicking on another language tab will add the translated fields, populated with the current fields in the default language.
 - If we return to the default language tab, make changes, and go back to another language tab, the previously filled fields will not be overwritten.
+- If DeepL is configured for the current content type, a `Translate` button is displayed next to the language tabs. Clicking it sends the configured field values from the default language to DeepL and fills translations for all configured languages except the default one.
+- Existing translated values are updated for matching languages. If a translation for a language does not exist yet, the plugin creates it.
+- After the DeepL request finishes, the plugin shows a notification with translated languages or errors, for example when DeepL does not support one of the selected languages.
 
 <img src=".docs/default-lng.png" alt="Default language tab" width="400"/>
 <img src=".docs/translation-lng.png" alt="Translation language tab" width="400"/>
