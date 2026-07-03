@@ -1,4 +1,6 @@
-[[_TOC_]]
+<a href="https://flotiq.com/">
+  <img src="https://editor.flotiq.com/fonts/fq-logo.svg" alt="Flotiq logo" title="Flotiq" align="right" height="60" />
+</a>
 
 # Multilingual Plugin
 
@@ -81,7 +83,6 @@ Event properties:
 | initialData    | Initial data of the content object. This will be either an empty object or the object being edited. |
 | language       | Language in ISO 639 language code                                                                   |
 
-
 ### `flotiq-multilingual.translation::update`
 
 Multilingual Plugin is listening to event from other plugins for updating translations.
@@ -89,13 +90,13 @@ If you want Multilingual Plugin to create or update existing translation use `fl
 
 Event properties:
 
-| Property       | Description                                                                                         |
-| -------------- | --------------------------------------------------------------------------------------------------- |
-| values         | Translated fields, eg. {"name": "New value"}                                                        |
-| language       | Language in ISO 639 language code                                                                   |
-| contentType    | Content type that includes the field                                                                |
-| initialData    | Initial data of the content object. This will be either an empty object or the object being edited. |
-| formUniqueKey  | Unique key from flotiq form events.                                                                 |
+| Property      | Description                                                                                         |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| values        | Translated fields, eg. {"name": "New value"}                                                        |
+| language      | Language in ISO 639 language code                                                                   |
+| contentType   | Content type that includes the field                                                                |
+| initialData   | Initial data of the content object. This will be either an empty object or the object being edited. |
+| formUniqueKey | Unique key from flotiq form events.                                                                 |
 
 ## Development
 
@@ -110,7 +111,7 @@ Event properties:
 
 Dev environment is configured to use:
 
-- `prettier` - best used with automatic format on save in IDE
+- `prettier` - best used with automatic format on save in IDE, remember to run `yarn format` before commiting changes
 - `eslint` - it is built into both `start` and `build` commands
 
 ### Output
@@ -133,7 +134,7 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
 2. Open Chrome Dev console
 3. Execute the following script
    ```javascript
-   FlotiqPlugins.loadPlugin("plugin-id", "<URL TO COMPILED JS>");
+   FlotiqPlugins.loadPlugin('plugin-id', '<URL TO COMPILED JS>');
    ```
 4. Navigate to the view that is modified by the plugin
 
@@ -151,3 +152,9 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
 1. Open Flotiq editor
 2. Add a new plugin and paste the URL to the hosted `plugin-manifest.json` file
 3. Navigate to the view that is modified by the plugin
+
+## Collaborating
+
+If you wish to talk with us about this project, feel free to hop on our [![Discord Chat](https://img.shields.io/discord/682699728454025410.svg)](https://discord.gg/FwXcHnX).
+
+If you found a bug, please report it in [issues](https://github.com/flotiq/flotiq-ui-plugin-templates-plain-js/issues).
