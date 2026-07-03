@@ -134,7 +134,7 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
 2. Open Chrome Dev console
 3. Execute the following script
    ```javascript
-   FlotiqPlugins.loadPlugin('plugin-id', '<URL TO COMPILED JS>');
+   FlotiqPlugins.loadPlugin("plugin-id", "<URL TO COMPILED JS>");
    ```
 4. Navigate to the view that is modified by the plugin
 

@@ -8,15 +8,19 @@
   "scripts": {
     "build": "node esbuild.config.js",
     "start": "node esbuild.config.js --watch",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,html,mdx,json,yaml,yml,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,html,mdx,json,yaml,yml,md}\"",
+    "lint": "eslint"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^8.0.1",
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^10.0.1",
     "esbuild": "^0.28.1",
     "esbuild-plugin-eslint": "^0.3.12",
     "esbuild-plugin-inline-import": "^1.1.0",
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.7.0",
     "postcss": "^8.5.16",
     "postcss-url": "^10.1.4",
     "prettier": "^3.9.4"
