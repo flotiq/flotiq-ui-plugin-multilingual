@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [0.11.0]
+### Added
+* Issue templates
+* Dependabot
+* Flotiq logo and collaboration section in readme
+* License
+* GitHub check actions
+* Information about DeepL configuration to readme
+
 ## [0.10.1]
 ### Fixed
 * fix infinite rerendering when changing content type in plugin settings causing "Maximum call stack size exceeded" error #27794

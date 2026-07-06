@@ -1,4 +1,6 @@
-[[_TOC_]]
+<a href="https://flotiq.com/">
+  <img src="https://editor.flotiq.com/fonts/fq-logo.svg" alt="Flotiq logo" title="Flotiq" align="right" height="60" />
+</a>
 
 # Multilingual Plugin
 
@@ -11,6 +13,17 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 1. First, select the Content Types.
 2. Add at least two languages and select the default language.
 3. After saving the settings, the Content Types are modified and a `__translations` field is added, containing an array of available translations. The translation language is available under the `__language` field in each `__translations` item.
+
+### DeepL configuration
+
+The plugin can use DeepL to generate translations automatically. To enable it, provide a DeepL API key in the plugin settings and add DeepL configuration for each content type that should support automatic translation.
+
+For every DeepL configuration entry:
+
+- Select the content type.
+- Select the fields that should be sent to DeepL. Only text-based fields are available: `text`, `textarea`, `richtext`, and `textMarkdown`. The `slug` field is excluded.
+
+DeepL configuration is optional. If the API key or configuration for a content type is missing, the object form will still use manual multilingual tabs, but the DeepL translation button will not be displayed.
 
 <img src=".docs/configuration.png" alt="Multilingual plugin configuration" width="700"/>
 
@@ -26,6 +39,9 @@ Multilingual Plugin is an advanced plugin that allows easy addition and manageme
 - When adding/editing an object, tabs with the previously selected languages will be available. The default language is always in the first tab.
 - Clicking on another language tab will add the translated fields, populated with the current fields in the default language.
 - If we return to the default language tab, make changes, and go back to another language tab, the previously filled fields will not be overwritten.
+- If DeepL is configured for the current content type, a `Translate` button is displayed next to the language tabs. Clicking it sends the configured field values from the default language to DeepL and fills translations for all configured languages except the default one.
+- Existing translated values are updated for matching languages. If a translation for a language does not exist yet, the plugin creates it.
+- After the DeepL request finishes, the plugin shows a notification with translated languages or errors, for example when DeepL does not support one of the selected languages.
 
 <img src=".docs/default-lng.png" alt="Default language tab" width="400"/>
 <img src=".docs/translation-lng.png" alt="Translation language tab" width="400"/>
@@ -81,7 +97,6 @@ Event properties:
 | initialData    | Initial data of the content object. This will be either an empty object or the object being edited. |
 | language       | Language in ISO 639 language code                                                                   |
 
-
 ### `flotiq-multilingual.translation::update`
 
 Multilingual Plugin is listening to event from other plugins for updating translations.
@@ -89,13 +104,13 @@ If you want Multilingual Plugin to create or update existing translation use `fl
 
 Event properties:
 
-| Property       | Description                                                                                         |
-| -------------- | --------------------------------------------------------------------------------------------------- |
-| values         | Translated fields, eg. {"name": "New value"}                                                        |
-| language       | Language in ISO 639 language code                                                                   |
-| contentType    | Content type that includes the field                                                                |
-| initialData    | Initial data of the content object. This will be either an empty object or the object being edited. |
-| formUniqueKey  | Unique key from flotiq form events.                                                                 |
+| Property      | Description                                                                                         |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| values        | Translated fields, eg. {"name": "New value"}                                                        |
+| language      | Language in ISO 639 language code                                                                   |
+| contentType   | Content type that includes the field                                                                |
+| initialData   | Initial data of the content object. This will be either an empty object or the object being edited. |
+| formUniqueKey | Unique key from flotiq form events.                                                                 |
 
 ## Development
 
@@ -110,7 +125,7 @@ Event properties:
 
 Dev environment is configured to use:
 
-- `prettier` - best used with automatic format on save in IDE
+- `prettier` - best used with automatic format on save in IDE, remember to run `yarn format` before commiting changes
 - `eslint` - it is built into both `start` and `build` commands
 
 ### Output
@@ -151,3 +166,9 @@ The plugins are built into a single `dist/index.js` file. The manifest is copied
 1. Open Flotiq editor
 2. Add a new plugin and paste the URL to the hosted `plugin-manifest.json` file
 3. Navigate to the view that is modified by the plugin
+
+## Collaborating
+
+If you wish to talk with us about this project, feel free to hop on our [![Discord Chat](https://img.shields.io/discord/682699728454025410.svg)](https://discord.gg/FwXcHnX).
+
+If you found a bug, please report it in [issues](https://github.com/flotiq/flotiq-ui-plugin-templates-plain-js/issues).

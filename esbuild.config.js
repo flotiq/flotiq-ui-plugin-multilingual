@@ -125,10 +125,11 @@ if (watch) {
   console.log("Watching for changes...");
   context.watch();
 
-  const { host, port } = await context.serve({
+  const { hosts, port } = await context.serve({
     servedir: "dist",
     port: 3050,
   });
+  const host = hosts[0];
 
   const headers = {
     "access-control-allow-origin": "*" /* @dev First, read about security */,
@@ -178,20 +179,20 @@ if (watch) {
 
   console.log(
     `Serving at http://${host.replace(
-      "0.0.0.0",
+      "127.0.0.1",
       "localhost",
     )}:${port}/index.js and https://${host.replace(
-      "0.0.0.0",
+      "127.0.0.1",
       "localhost",
     )}:${3053}/index.js`,
   );
 
   console.log(
     `Manifest file is avaiable at http://${host.replace(
-      "0.0.0.0",
+      "127.0.0.1",
       "localhost",
     )}:${port}/plugin-manifest.json and https://${host.replace(
-      "0.0.0.0",
+      "127.0.0.1",
       "localhost",
     )}:${3053}/plugin-manifest.json`,
   );

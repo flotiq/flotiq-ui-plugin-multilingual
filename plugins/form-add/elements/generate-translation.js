@@ -42,7 +42,7 @@ const getTranslations = async (apiKey, fieldValues, targetLang) => {
     }, {});
   } catch (error) {
     console.error("Error translating content:", error);
-    throw new Error(error);
+    throw new Error(error, { cause: error });
   }
 };
 
