@@ -254,7 +254,9 @@
   gap: 5px;
   color: #0083fc;
   font-weight: 500;
-  padding: 6px 0;
+  padding: 4px 0;
+  margin-bottom: 8px;
+  cursor: pointer;
 }
 
 .mode-dark .plugin-multilingual-sync-button {
