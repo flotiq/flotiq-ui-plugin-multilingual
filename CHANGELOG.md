@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [0.11.1]
+### Changed
+* updated the sync values button placement so that it is rendered below the relation field instead of below its label
+
+### Fixed
+* an error caused by inserting the sync values button into the wrong parent element
+
 ## [0.11.0]
 ### Added
 * Issue templates

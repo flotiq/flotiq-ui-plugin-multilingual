@@ -15,9 +15,6 @@ export const createSyncButton = (
 ) => {
   const cachePrefix = `${pluginInfo.id}-${contentTypeName}-${formUniqueKey}-${name}`;
 
-  const wrapperCacheKey = `${cachePrefix}-sync-ghost-wrapper`;
-  let ghostWrapper = getCachedElement(wrapperCacheKey)?.element;
-
   const syncButtonCacheKey = `${cachePrefix}-sync-field`;
   let syncButton = getCachedElement(syncButtonCacheKey)?.element;
   let syncButtonData = getCachedElement(syncButtonCacheKey)?.data || {};
@@ -41,16 +38,5 @@ export const createSyncButton = (
     addElementToCache(syncButton, syncButtonCacheKey, syncButtonData);
   }
 
-  if (!ghostWrapper) {
-    ghostWrapper = document.createElement("div");
-    addElementToCache(ghostWrapper, wrapperCacheKey);
-
-    ghostWrapper.addEventListener("flotiq.attached", () => {
-      const field = ghostWrapper.parentElement.previousElementSibling;
-      const labelElement = field.querySelector("label");
-      field.insertBefore(syncButton, labelElement.nextSibling);
-    });
-  }
-
-  return ghostWrapper;
+  return syncButton;
 };
