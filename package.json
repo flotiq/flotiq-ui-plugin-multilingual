@@ -1,6 +1,6 @@
 {
   "name": "flotiq.multilingual",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "license": "MIT",
   "author": "Flotiq team <helo@flotiq.com> (https://flotiq.com/)",
   "description": "Multilingual Plugin is an advanced plugin that allows easy addition and management of translations while editing objects. It supports multiple languages and enables users to define and manage their own language sets.",
