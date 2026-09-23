@@ -30,6 +30,6 @@
     "chalk": "^5.6.2",
     "deep-equal": "^2.2.3",
     "esbuild-plugin-copy": "^2.1.1",
-    "i18next": "^26.3.4"
+    "i18next": "^26.3.6"
   }
 }
