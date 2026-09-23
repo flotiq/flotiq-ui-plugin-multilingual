@@ -29,7 +29,7 @@ export const addToTranslations = (
     __language: language,
   };
 
-  const fieldName = `__translations.[${lngIndex}]`;
+  const fieldName = `__translations[${lngIndex}]`;
   form.setFieldValue(fieldName, newTranslation);
 
   window.FlotiqPlugins.run(`flotiq-multilingual.translation::changed`, {
