@@ -21,7 +21,7 @@
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.13.0",
-    "postcss": "^8.5.31",
+    "postcss": "^8.5.32",
     "postcss-url": "^10.1.4",
     "prettier": "^3.9.10"
   },
